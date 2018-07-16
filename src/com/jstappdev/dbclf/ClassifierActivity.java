@@ -13,7 +13,6 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.Toast;
@@ -217,7 +216,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                                 IMAGE_STD,
                                 INPUT_NAME,
                                 OUTPUT_NAME);
-                Log.d("tf", "instantiated new classifier");
             } catch (OutOfMemoryError e) {
                 runOnUiThread(() -> {
                     cameraButton.setEnabled(true);
@@ -239,10 +237,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         canvas.drawBitmap(rgbFrameBitmap, frameToCropTransform, null);
 
         if (snapShot.compareAndSet(true, false) || continuousInference) {
-            initClassifier();
-            if (classifier == null)
-                return;
-
             final Bitmap finalCroppedBitmap = croppedBitmap.copy(croppedBitmap.getConfig(), false);
 
             runOnUiThread(() -> {
