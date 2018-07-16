@@ -6,8 +6,8 @@ getProject().setBuildDir('gradleBuild')
 
 buildscript {
     repositories {
-        jcenter()
         google()
+        jcenter()
     }
 
     dependencies {
@@ -18,20 +18,15 @@ buildscript {
 
 allprojects {
     repositories {
-        jcenter()
-        maven { url "https://jitpack.io" }
-
-        // https://github.com/tensorflow/tensorflow/issues/13653
-        maven {
-            url 'https://google.bintray.com/tensorflow'
-        }
         google()
+        maven { url "https://jitpack.io" }
+        jcenter()
     }
 }
 
 // set to 'cmake', 'none'
 // cmake will only build for armabi-v7a
-def nativeBuildSystem = 'cmake'
+def nativeBuildSystem = 'none'
 
 // Controls output directory in APK and CPU type for Bazel builds.
 // The CMake build has only been tested with armeabi-v7a; others may not work.
@@ -59,8 +54,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 27
 
-        versionCode 51
-        versionName "24"
+        versionCode 52
+        versionName "25"
     }
 
     if (nativeBuildSystem == 'cmake') {

@@ -186,7 +186,6 @@ public abstract class CameraActivity extends Activity
             });
 
             pnlFlash.startAnimation(fade);
-            processImage();
         });
 
         continuousInferenceButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
@@ -202,7 +201,8 @@ public abstract class CameraActivity extends Activity
 
             imageSet = false;
 
-            handler.post(() -> updateResults(null));
+            if (handler != null)
+                handler.post(() -> updateResults(null));
 
             readyForNextImage();
         });
@@ -390,8 +390,6 @@ public abstract class CameraActivity extends Activity
         if (actionBar != null)
             actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_HOME
                     | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
-
-        initClassifier();
 
         if (!imageSet) cameraButton.setEnabled(true);
     }
