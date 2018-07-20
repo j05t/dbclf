@@ -1,5 +1,22 @@
 package com.jstappdev.dbclf;
 
+/*
+ * Copyright 2016 The TensorFlow Authors. All Rights Reserved.
+ * Modifications copyright (C) 2018 Josef Steppan
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 import android.Manifest;
 import android.app.ActionBar;
 import android.app.Activity;
@@ -559,13 +576,10 @@ public abstract class CameraActivity extends Activity
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
                     CameraConnectionFragment.newInstance(
-                            new CameraConnectionFragment.ConnectionCallback() {
-                                @Override
-                                public void onPreviewSizeChosen(final Size size, final int rotation) {
-                                    previewHeight = size.getHeight();
-                                    previewWidth = size.getWidth();
-                                    CameraActivity.this.onPreviewSizeChosen(size, rotation);
-                                }
+                            (size, rotation) -> {
+                                previewHeight = size.getHeight();
+                                previewWidth = size.getWidth();
+                                CameraActivity.this.onPreviewSizeChosen(size, rotation);
                             },
                             this,
                             getLayoutId(),
@@ -578,7 +592,6 @@ public abstract class CameraActivity extends Activity
                     new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
         }
 
-        //fragment.setRetainInstance(false);
         getFragmentManager()
                 .beginTransaction()
                 .replace(R.id.container, fragment)
@@ -748,19 +761,16 @@ public abstract class CameraActivity extends Activity
 
     }
 
-
     public Bitmap takeScreenshot() {
         View rootView = findViewById(android.R.id.content).getRootView();
         rootView.setDrawingCacheEnabled(true);
         return rootView.getDrawingCache();
     }
 
-    // https://stackoverflow.com/questions/3733988/screen-capture-in-android
     protected void setupShareButton() {
         shareButton.setVisibility(View.VISIBLE);
         shareButton.setEnabled(true);
 
-        // https://stackoverflow.com/questions/9049143/android-share-intent-for-a-bitmap-is-it-possible-not-to-save-it-prior-sharing
         shareButton.setOnClickListener(v -> {
             shareButton.setVisibility(View.GONE);
             // save bitmap to cache directory

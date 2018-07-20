@@ -1,5 +1,23 @@
 package com.jstappdev.dbclf;
 
+/*
+ * Copyright 2017 The TensorFlow Authors. All Rights Reserved.
+ * Modifications copyright (C) 2018 Josef Steppan
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -20,10 +38,9 @@ import com.jstappdev.dbclf.env.ImageUtils;
 import java.io.IOException;
 import java.util.List;
 
-//@SuppressLint("ValidFragment")
+@SuppressLint("ValidFragment")
 public class LegacyCameraConnectionFragment extends Fragment {
     private Camera camera;
-    //private static final Logger LOGGER = new Logger();
     private Camera.PreviewCallback imageListener;
     private Size desiredSize;
 
@@ -39,30 +56,6 @@ public class LegacyCameraConnectionFragment extends Fragment {
         this.layout = layout;
         this.desiredSize = desiredSize;
     }
-
-
-/*
-
-    // fixxxme
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        try {
-            imageListener = (Camera.PreviewCallback) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement Camera.PreviewCallback interface");
-        }
-    }
-*/
-
-    /*
-    // fixxxme - should be default here
-    public LegacyCameraConnectionFragment() {
-        this.layout = R.layout.camera_connection_fragment;
-        this.desiredSize = new Size(299,299);
-    }
-
-*/
 
 
     /**

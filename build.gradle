@@ -46,16 +46,16 @@ project.ext.TMP_DIR = project.buildDir.toString() + '/downloads'
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 27
+    compileSdkVersion 28
     buildToolsVersion '27.0.3'
 
     defaultConfig {
         applicationId = 'com.jstappdev.dbclf'
         minSdkVersion 21
-        targetSdkVersion 27
+        targetSdkVersion 28
 
-        versionCode 52
-        versionName "25"
+        versionCode 54
+        versionName "26"
     }
 
     if (nativeBuildSystem == 'cmake') {
