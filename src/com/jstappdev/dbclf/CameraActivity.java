@@ -280,6 +280,9 @@ public abstract class CameraActivity extends Activity
                 continuousInferenceButton.setChecked(false);
                 startActivityForResult(i, PICK_IMAGE);
                 break;
+            case R.id.list_breeds:
+                startActivity(new Intent(this, SimpleListActivity.class));
+                break;
             case R.id.action_exit:
                 finishAndRemoveTask();
                 break;

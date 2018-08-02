@@ -26,7 +26,7 @@ allprojects {
 
 // set to 'cmake', 'none'
 // cmake will only build for armabi-v7a
-def nativeBuildSystem = 'none'
+def nativeBuildSystem = 'cmake'
 
 // Controls output directory in APK and CPU type for Bazel builds.
 // The CMake build has only been tested with armeabi-v7a; others may not work.
@@ -54,8 +54,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 54
-        versionName "26"
+        versionCode 55
+        versionName "27"
     }
 
     if (nativeBuildSystem == 'cmake') {
@@ -107,4 +107,5 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-android:1.8.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3'
     implementation 'com.android.support:support-v4:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.2'
 }

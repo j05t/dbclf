@@ -21,4 +21,6 @@
     <string name="error_tf_init">Out of Memory Error. Try closing a few background applications.</string>
     <string name="running_prediction">Analyzing picture..</string>
     <string name="share_with">Share with..</string>
+    <string name="list_breeds">Dog Breeds</string>
+    <string name="list_empty">There is no data</string>
 </resources>

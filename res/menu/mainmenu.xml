@@ -5,6 +5,9 @@
         android:title="@string/from_gallery"
         android:showAsAction="ifRoom" />
     <item
+        android:id="@+id/list_breeds"
+        android:title="@string/list_breeds" />
+    <item
         android:id="@+id/action_about"
         android:title="@string/about_menu" />
     <item

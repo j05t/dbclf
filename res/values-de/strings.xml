@@ -21,4 +21,6 @@
     <string name="error_tf_init">Zu wenig freier Speicher. Versuchen Sie, einige Hintergrundanwendungen zu schließen.</string>
     <string name="running_prediction">Analysiere Bild..</string>
     <string name="share_with">Teile mit..</string>
+    <string name="list_breeds">Hunderassen</string>
+    <string name="list_empty">Keine Daten</string>
 </resources>
