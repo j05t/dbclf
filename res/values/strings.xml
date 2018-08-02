@@ -23,4 +23,7 @@
     <string name="share_with">Share with..</string>
     <string name="list_breeds">Dog Breeds</string>
     <string name="list_empty">There is no data</string>
+    <string name="searchFor">Search Wikipedia?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
 </resources>

@@ -26,7 +26,7 @@ allprojects {
 
 // set to 'cmake', 'none'
 // cmake will only build for armabi-v7a
-def nativeBuildSystem = 'cmake'
+def nativeBuildSystem = 'none'
 
 // Controls output directory in APK and CPU type for Bazel builds.
 // The CMake build has only been tested with armeabi-v7a; others may not work.

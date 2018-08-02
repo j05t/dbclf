@@ -53,8 +53,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
-        ImageView imageViewListChild = (ImageView) convertView.findViewById(R.id.breed_image);
-
+        ImageView imageViewListChild = convertView.findViewById(R.id.breed_image);
 
         imageViewListChild.setImageBitmap(getBitmapFromAsset(_context, childText));
         return convertView;
@@ -119,7 +118,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
             istr = assetManager.open(filePath + ".jpg");
             bitmap = BitmapFactory.decodeStream(istr);
         } catch (IOException e) {
-            // handle exception
+            // todo: handle exception
         }
 
         return bitmap;

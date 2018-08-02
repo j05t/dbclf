@@ -39,7 +39,7 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
-        <activity android:name=".SimpleListActivity"></activity>
+        <activity android:name=".SimpleListActivity" />
     </application>
 
 </manifest>

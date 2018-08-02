@@ -1,7 +1,11 @@
 package com.jstappdev.dbclf;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.res.AssetManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -25,11 +29,39 @@ public class SimpleListActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        expListView =  findViewById(R.id.lvExp);
+        expListView = findViewById(R.id.lvExp);
 
         prepareListData();
 
         listAdapter = new ListAdapter(this, listDataHeader, listDataChild);
+
+        expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
+            final String title = listDataHeader.get(groupPosition);
+            final String searchText = title.replace(" ", "+");
+
+            DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
+                switch (which) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        final String url = "https://wikipedia.org/w/index.php?search=" + searchText
+                                + "&title=Special:Search";
+
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(url));
+                        startActivity(i);
+                        break;
+
+                    case DialogInterface.BUTTON_NEGATIVE:
+                        break;
+                }
+            };
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage(R.string.searchFor).setTitle(title)
+                    .setNegativeButton(R.string.no, dialogClickListener)
+                    .setPositiveButton(R.string.yes, dialogClickListener).show();
+
+            return false;
+        });
 
         expListView.setAdapter(listAdapter);
     }

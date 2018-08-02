@@ -1,12 +1,12 @@
 Affenpinscher
 Afghan Hound
 African Hunting Dog
-Airedale
+Airedale Terrier
 American Staffordshire Terrier
-Appenzeller
+Appenzeller Sennenhund
 Australian Terrier
 Basenji
-Basset
+Basset Hound
 Beagle
 Bedlington Terrier
 Bernese Mountain Dog
@@ -17,7 +17,7 @@ Border Collie
 Border Terrier
 Borzoi
 Bouvier Des Flandres
-Boxer
+German Boxer
 Brabancon Griffon
 Briard
 Brittany Spaniel
@@ -65,22 +65,22 @@ Komondor
 Kuvasz
 Labrador Retriever
 Lakeland Terrier
-Leonberg
-Lhasa
-Long Haired Dachshund
+Leonberger
+Lhasa Apso
+Dachshund
 Malamute
 Malinois
-Mexican Hairless
+Mexican Hairless Dog
 Miniature Pinscher
 Miniature Poodle
 Miniature Schnauzer
-Newfoundland
+Newfoundland Dog
 Norfolk Terrier
 Norwegian Elkhound
 Norwich Terrier
 Old English Sheepdog
 Otterhound
-Papillon
+Papillon Dog
 Pekinese
 Pembroke
 Pomeranian
@@ -88,13 +88,13 @@ Pug
 Redbone
 Rhodesian Ridgeback
 Rottweiler
-Boston Bull
+Boston Terrier
 Dhole
 Ibizan Hound
 Maltese Dog
 Saint Bernard
 Saluki
-Samoyed
+Samoyed Dog
 Schipperke
 Scotch Terrier
 Scottish Deerhound
@@ -111,7 +111,7 @@ Tibetan Mastiff
 Tibetan Terrier
 Toy Poodle
 Toy Terrier
-Tzu
+Shih Tzu
 Vizsla
 Walker Hound
 Weimaraner
