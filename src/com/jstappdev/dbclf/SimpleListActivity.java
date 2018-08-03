@@ -19,15 +19,19 @@ import java.util.List;
 
 public class SimpleListActivity extends Activity {
 
-    ExpandableListAdapter listAdapter;
-    ExpandableListView expListView;
-    List<String> listDataHeader;
-    HashMap<String, String> listDataChild;
+    private ExpandableListAdapter listAdapter;
+    private ExpandableListView expListView;
+    private List<String> listDataHeader;
+    private HashMap<String, String> listDataChild;
+    private Boolean showRecogsOnly;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
+
+        Intent intent = getIntent();
+        showRecogsOnly = intent.getBooleanExtra("SHOW_RECOGS", false);
 
         expListView = findViewById(R.id.lvExp);
 
@@ -66,6 +70,15 @@ public class SimpleListActivity extends Activity {
         expListView.setAdapter(listAdapter);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (showRecogsOnly)
+            for (int i = 0; i < listDataHeader.size(); i++)
+                expListView.expandGroup(i);
+    }
+
     /*
      * Preparing the list data
      */
@@ -77,11 +90,19 @@ public class SimpleListActivity extends Activity {
 
         AssetManager assetManager = getAssets();
 
+        if (showRecogsOnly) {
+            int i = 0;
+            for (String r : CameraActivity.currentRecognitions) {
+                listDataHeader.add(r);
+                listDataChild.put(listDataHeader.get(i++), r.toLowerCase().replace(" ", "_"));
+            }
+            return;
+        }
+
         try (BufferedReader br =
                      new BufferedReader(new InputStreamReader(assetManager.open(actualFilename)))) {
             String line;
             int i = 0;
-
             while ((line = br.readLine()) != null) {
                 listDataHeader.add(line);
                 listDataChild.put(listDataHeader.get(i), line.toLowerCase().replace(" ", "_"));

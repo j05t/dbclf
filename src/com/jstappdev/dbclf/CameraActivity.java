@@ -102,6 +102,7 @@ public abstract class CameraActivity extends Activity
     private byte[][] yuvBytes = new byte[3][];
     private int[] rgbBytes = null;
     private int yRowStride;
+    public static List<String> currentRecognitions;
 
     protected int previewWidth = 0;
     protected int previewHeight = 0;
@@ -140,11 +141,6 @@ public abstract class CameraActivity extends Activity
         // this will show @drawable/ic_first_time_instructions.xml SVG picture
         if (isFirstTime()) firstTimeInstructionsTopLayer.setVisibility(View.INVISIBLE);
 
-        imageViewFromGallery = findViewById(R.id.imageView);
-        resultsView = findViewById(R.id.results);
-        mChart = findViewById(R.id.chart);
-        progressBar = findViewById(R.id.progressBar);
-
         setupButtons();
         setupPieChart();
 
@@ -164,6 +160,11 @@ public abstract class CameraActivity extends Activity
     }
 
     private void setupButtons() {
+        imageViewFromGallery = findViewById(R.id.imageView);
+        resultsView = findViewById(R.id.results);
+        mChart = findViewById(R.id.chart);
+        progressBar = findViewById(R.id.progressBar);
+
         continuousInferenceButton = findViewById(R.id.continuousInferenceButton);
         cameraButton = findViewById(R.id.cameraButton);
         shareButton = findViewById(R.id.shareButton);
@@ -222,6 +223,17 @@ public abstract class CameraActivity extends Activity
                 handler.post(() -> updateResults(null));
 
             readyForNextImage();
+        });
+
+        resultsView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0) return;
+
+                Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
+                i.putExtra("SHOW_RECOGS", true);
+                startActivity(i);
+            }
         });
     }
 
@@ -653,12 +665,14 @@ public abstract class CameraActivity extends Activity
     // update results on our custom textview
     void updateResultsView(List<Classifier.Recognition> results) {
         final StringBuilder sb = new StringBuilder();
+        currentRecognitions = new ArrayList<String>();
 
         if (results != null) {
             for (final Classifier.Recognition recog : results) {
                 final String text = String.format(Locale.getDefault(), "%s: %d %%\n",
                         recog.getTitle(), Math.round(recog.getConfidence() * 100));
                 sb.append(text);
+                currentRecognitions.add(recog.getTitle());
             }
         } else sb.append("");
 

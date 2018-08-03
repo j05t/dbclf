@@ -14,7 +14,7 @@
     <p>Wenn Ihnen diese App gefällt, sollten Sie die Premium Version kaufen, die die Identifizierung von mehr als zweihundert verschiedenen Hunderassen mit viel höherer Genauigkeit erlaubt: https://play.google.com/store/apps/details?id=com.jstappdev.identify_dog_breeds_pro</p>
     <h2>Anerkennungen</h2>
     <p>Basierend auf einer erweiterten Version des Stanford Dogs Datensatzes. Icons von Pause08, Smashicons, Freepik von www.flaticon.com.</p>
-    <p>Apache License 2.0. Source code verfügbar auf github.com/j05t/dbclf.</p>
+    <p>Apache License 2.0. Source code verfügbar auf github.com/j05t/dbclf. Bilder von Wikipedia.</p>
     ]]></string>
     <string name="about_menu">Über diese App</string>
     <string name="exit_menu">Beenden</string>
@@ -23,7 +23,7 @@
     <string name="share_with">Teile mit..</string>
     <string name="list_breeds">Hunderassen</string>
     <string name="list_empty">Keine Daten</string>
-    <string name="searchFor">Search Wikipedia?</string>
-    <string name="no">No</string>
-    <string name="yes">Yes</string>
+    <string name="searchFor">Suche auf Wikipedia?</string>
+    <string name="no">Nein</string>
+    <string name="yes">Ja</string>
 </resources>

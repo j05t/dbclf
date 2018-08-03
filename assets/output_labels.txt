@@ -23,7 +23,7 @@ Briard
 Brittany Spaniel
 Bull Mastiff
 Cairn
-Cardigan
+Cardigan Welsh Corgi
 Chesapeake Bay Retriever
 Chihuahua
 Chow
@@ -82,7 +82,7 @@ Old English Sheepdog
 Otterhound
 Papillon Dog
 Pekinese
-Pembroke
+Pembroke Welsh Corgi
 Pomeranian
 Pug
 Redbone
