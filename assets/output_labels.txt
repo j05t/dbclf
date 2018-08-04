@@ -12,7 +12,7 @@ Bedlington Terrier
 Bernese Mountain Dog
 Blenheim Spaniel
 Bloodhound
-Bluetick
+Bluetick Coonhound
 Border Collie
 Border Terrier
 Borzoi
@@ -22,24 +22,24 @@ Brabancon Griffon
 Briard
 Brittany Spaniel
 Bull Mastiff
-Cairn
+Cairn Terrier
 Cardigan Welsh Corgi
 Chesapeake Bay Retriever
 Chihuahua
-Chow
-Clumber
+Chow Chow
+Clumber Spaniel
 Coated Retriever
 Coated Wheaten Terrier
 Cocker Spaniel
 Collie
 Curly Coated Retriever
-Dandie Dinmont
+Dandie Dinmont Terrier
 Dingo
 Doberman
 English Foxhound
 English Setter
-English Springer
-Entlebucher
+English Springer Spaniel
+Entlebucher Mountain Dog
 Eskimo Dog
 French Bulldog
 German Shepherd
@@ -49,7 +49,7 @@ Gordon Setter
 Greater Swiss Mountain Dog
 Great Dane
 Great Pyrenees
-Groenendael
+Groenendael Dog
 Haired Fox Terrier
 Haired Pointer
 Irish Setter
@@ -69,7 +69,7 @@ Leonberger
 Lhasa Apso
 Dachshund
 Malamute
-Malinois
+Malinois Dog
 Mexican Hairless Dog
 Miniature Pinscher
 Miniature Poodle
@@ -81,11 +81,11 @@ Norwich Terrier
 Old English Sheepdog
 Otterhound
 Papillon Dog
-Pekinese
+Pekingese
 Pembroke Welsh Corgi
 Pomeranian
 Pug
-Redbone
+Redbone Coonhound
 Rhodesian Ridgeback
 Rottweiler
 Boston Terrier
@@ -102,7 +102,7 @@ Sealyham Terrier
 Shetland Sheepdog
 Siberian Husky
 Silky Terrier
-Staffordshire Bullterrier
+Staffordshire Bull Terrier
 Standard Poodle
 Standard Schnauzer
 Sussex Spaniel
