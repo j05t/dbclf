@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.AssetManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ExpandableListAdapter;
@@ -19,7 +18,6 @@ import java.util.List;
 
 public class SimpleListActivity extends Activity {
 
-    private ExpandableListAdapter listAdapter;
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, String> listDataChild;
@@ -37,7 +35,7 @@ public class SimpleListActivity extends Activity {
 
         prepareListData();
 
-        listAdapter = new ListAdapter(this, listDataHeader, listDataChild);
+        ExpandableListAdapter listAdapter = new ListAdapter(this, listDataHeader, listDataChild);
 
         expListView.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> {
             final String title = listDataHeader.get(groupPosition);
@@ -46,8 +44,8 @@ public class SimpleListActivity extends Activity {
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        final String url = "https://wikipedia.org/w/index.php?search=" + searchText
-                                + "&title=Special:Search";
+                        final String url = "https://wikipedia.org/w/index.php?search="
+                                + searchText + "&title=Special:Search";
 
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
@@ -86,10 +84,6 @@ public class SimpleListActivity extends Activity {
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
-        final String actualFilename = ClassifierActivity.LABEL_FILE.split("file:///android_asset/")[1];
-
-        AssetManager assetManager = getAssets();
-
         if (showRecogsOnly) {
             int i = 0;
             for (String r : CameraActivity.currentRecognitions) {
@@ -99,14 +93,15 @@ public class SimpleListActivity extends Activity {
             return;
         }
 
+        final String actualFilename = ClassifierActivity.LABEL_FILE.split("file:///android_asset/")[1];
+
         try (BufferedReader br =
-                     new BufferedReader(new InputStreamReader(assetManager.open(actualFilename)))) {
+                     new BufferedReader(new InputStreamReader(getAssets().open(actualFilename)))) {
             String line;
             int i = 0;
             while ((line = br.readLine()) != null) {
                 listDataHeader.add(line);
-                listDataChild.put(listDataHeader.get(i), line.toLowerCase().replace(" ", "_"));
-                i++;
+                listDataChild.put(listDataHeader.get(i++), line.toLowerCase().replace(" ", "_"));
             }
         } catch (IOException e) {
             throw new RuntimeException("Problem reading label file!", e);

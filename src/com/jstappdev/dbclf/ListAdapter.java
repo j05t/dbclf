@@ -19,21 +19,21 @@ import java.util.List;
 
 public class ListAdapter extends BaseExpandableListAdapter {
 
-    private Context _context;
-    private List<String> _listDataHeader; // header titles
+    private Context context;
+    private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
-    private HashMap<String, String> _listDataChild;
+    private HashMap<String, String> listDataChild;
 
     public ListAdapter(Context context, List<String> listDataHeader,
                        HashMap<String, String> listChildData) {
-        this._context = context;
-        this._listDataHeader = listDataHeader;
-        this._listDataChild = listChildData;
+        this.context = context;
+        this.listDataHeader = listDataHeader;
+        this.listDataChild = listChildData;
     }
 
     @Override
     public Object getChild(int groupPosition, int childPosititon) {
-        return this._listDataChild.get(this._listDataHeader.get(groupPosition));
+        return this.listDataChild.get(this.listDataHeader.get(groupPosition));
     }
 
     @Override
@@ -48,32 +48,32 @@ public class ListAdapter extends BaseExpandableListAdapter {
         final String childText = (String) getChild(groupPosition, childPosition);
 
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_item, null);
         }
 
         ImageView imageViewListChild = convertView.findViewById(R.id.breed_image);
 
-        imageViewListChild.setImageBitmap(getBitmapFromAsset(_context, childText));
+        imageViewListChild.setImageBitmap(getBitmapFromAsset(context, childText));
         return convertView;
     }
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        if (this._listDataChild.get(this._listDataHeader.get(groupPosition)) != null)
+        if (this.listDataChild.get(this.listDataHeader.get(groupPosition)) != null)
             return 1;
         else return 0;
     }
 
     @Override
     public Object getGroup(int groupPosition) {
-        return this._listDataHeader.get(groupPosition);
+        return this.listDataHeader.get(groupPosition);
     }
 
     @Override
     public int getGroupCount() {
-        return this._listDataHeader.size();
+        return this.listDataHeader.size();
     }
 
     @Override
@@ -86,13 +86,12 @@ public class ListAdapter extends BaseExpandableListAdapter {
                              View convertView, ViewGroup parent) {
         String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
-            LayoutInflater infalInflater = (LayoutInflater) this._context
+            LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, null);
         }
 
-        TextView lblListHeader = (TextView) convertView
-                .findViewById(R.id.lblListHeader);
+        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -118,9 +117,12 @@ public class ListAdapter extends BaseExpandableListAdapter {
             istr = assetManager.open(filePath + ".jpg");
             bitmap = BitmapFactory.decodeStream(istr);
         } catch (IOException e) {
-            // todo: handle exception
+            try {
+                istr = assetManager.open("nodata.jpg");
+                bitmap = BitmapFactory.decodeStream(istr);
+            } catch (IOException e1) {
+            }
         }
-
         return bitmap;
     }
 }

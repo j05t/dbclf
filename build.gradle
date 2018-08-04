@@ -54,8 +54,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 55
-        versionName "27"
+        versionCode 57
+        versionName "28"
     }
 
     if (nativeBuildSystem == 'cmake') {
