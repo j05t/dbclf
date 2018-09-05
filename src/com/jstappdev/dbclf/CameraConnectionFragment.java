@@ -158,9 +158,9 @@ public class CameraConnectionFragment extends Fragment {
                 @Override
                 public void onOpened(final CameraDevice cd) {
                     // This method is called when the camera is opened.  We start camera preview here.
-                    cameraOpenCloseLock.release();
                     cameraDevice = cd;
                     createCameraPreviewSession();
+                    cameraOpenCloseLock.release();
                 }
 
                 @Override
