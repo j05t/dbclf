@@ -53,6 +53,8 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
             textView.setOnClickListener(this);
             indexLayout.addView(textView);
         }
+
+        indexLayout.setVisibility(View.VISIBLE);
     }
 
     // handle click on side index
@@ -108,8 +110,10 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         expListView.setAdapter(listAdapter);
 
         // display list index
-        getIndexList();
-        displayIndex();
+        if (!showRecogsOnly) {
+            getIndexList();
+            displayIndex();
+        }
     }
 
     @Override

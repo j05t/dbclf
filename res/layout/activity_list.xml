@@ -17,6 +17,7 @@
         android:layout_alignParentTop="true"
         android:background="#c3c3c3"
         android:gravity="center_vertical"
-        android:orientation="vertical" />
+        android:orientation="vertical"
+        android:visibility="gone" />
 
 </RelativeLayout>
