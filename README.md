@@ -4,4 +4,4 @@ This is the source code for the <a href="https://play.google.com/store/apps/deta
 Stanford Dogs Dataset</a>. Based on the <a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android">TensorFlow Android Camera Demo</a>
  application, licensed under <a href="https://github.com/j05t/dbclf/blob/master/LICENSE">Apache License 2.0</a>.
  
-<img src="https://github.com/j05t/dbclf/blob/master/screenshot.png" alt="Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot1.png" alt="Another Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot3.png" alt="Another Screenshot" width="30%" height="30%" />
+<img src="https://github.com/j05t/dbclf/blob/master/screenshot1.png" alt="Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot2.png" alt="Another Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot3.png" alt="Another Screenshot" width="30%" height="30%" />

@@ -228,7 +228,8 @@ public abstract class CameraActivity extends Activity
         resultsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0) return;
+                if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
+                    return;
 
                 Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
                 i.putExtra("SHOW_RECOGS", true);

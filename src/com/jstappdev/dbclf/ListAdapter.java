@@ -24,8 +24,8 @@ public class ListAdapter extends BaseExpandableListAdapter {
     // child data in format of header title, child title
     private HashMap<String, String> listDataChild;
 
-    public ListAdapter(Context context, List<String> listDataHeader,
-                       HashMap<String, String> listChildData) {
+    ListAdapter(Context context, List<String> listDataHeader,
+                HashMap<String, String> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
@@ -50,7 +50,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_item, null);
+            convertView = infalInflater.inflate(R.layout.list_item, parent, false);
         }
 
         ImageView imageViewListChild = convertView.findViewById(R.id.breed_image);
@@ -88,7 +88,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = infalInflater.inflate(R.layout.list_group, null);
+            convertView = infalInflater.inflate(R.layout.list_group, parent, false);
         }
 
         TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
@@ -108,7 +108,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    public static Bitmap getBitmapFromAsset(Context context, String filePath) {
+    private static Bitmap getBitmapFromAsset(Context context, String filePath) {
         AssetManager assetManager = context.getAssets();
 
         InputStream istr;
@@ -125,4 +125,5 @@ public class ListAdapter extends BaseExpandableListAdapter {
         }
         return bitmap;
     }
+
 }

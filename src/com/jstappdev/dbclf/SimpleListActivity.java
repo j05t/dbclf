@@ -6,22 +6,62 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
-public class SimpleListActivity extends Activity {
+public class SimpleListActivity extends Activity implements View.OnClickListener {
 
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, String> listDataChild;
     private Boolean showRecogsOnly;
+    private HashMap<String, Integer> mapIndex;  // hashmap for side index
+
+    // create list for side index
+    private void getIndexList() {
+        mapIndex = new LinkedHashMap<String, Integer>();
+        for (int i = 0; i < listDataHeader.size(); i++) {
+            String item = listDataHeader.get(i);
+            String index = item.substring(0, 1);
+
+            if (mapIndex.get(index) == null)
+                mapIndex.put(index, i);
+        }
+    }
+
+    // display side index
+    private void displayIndex() {
+        LinearLayout indexLayout = findViewById(R.id.side_index);
+
+        TextView textView;
+        List<String> indexList = new ArrayList<String>(mapIndex.keySet());
+        for (String index : indexList) {
+            textView = (TextView) getLayoutInflater().inflate(
+                    R.layout.side_index_item, null);
+            textView.setText(index);
+            textView.setOnClickListener(this);
+            indexLayout.addView(textView);
+        }
+    }
+
+    // handle click on side index
+    @Override
+    public void onClick(View v) {
+        TextView selectedIndex = (TextView) v;
+        expListView.setSelection(mapIndex.get(selectedIndex.getText().toString()));
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +106,10 @@ public class SimpleListActivity extends Activity {
         });
 
         expListView.setAdapter(listAdapter);
+
+        // display list index
+        getIndexList();
+        displayIndex();
     }
 
     @Override
@@ -108,5 +152,6 @@ public class SimpleListActivity extends Activity {
         }
 
     }
+
 
 }

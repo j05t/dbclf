@@ -9,4 +9,14 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent" />
 
+    <LinearLayout
+        android:id="@+id/side_index"
+        android:layout_width="32dp"
+        android:layout_height="fill_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:background="#c3c3c3"
+        android:gravity="center_vertical"
+        android:orientation="vertical" />
+
 </RelativeLayout>
