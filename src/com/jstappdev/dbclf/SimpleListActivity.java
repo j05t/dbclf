@@ -138,23 +138,19 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
                 listDataHeader.add(r);
                 listDataChild.put(listDataHeader.get(i++), r.toLowerCase().replace(" ", "_"));
             }
-            return;
-        }
-
-        final String actualFilename = ClassifierActivity.LABEL_FILE.split("file:///android_asset/")[1];
-
-        try (BufferedReader br =
-                     new BufferedReader(new InputStreamReader(getAssets().open(actualFilename)))) {
-            String line;
-            int i = 0;
-            while ((line = br.readLine()) != null) {
-                listDataHeader.add(line);
-                listDataChild.put(listDataHeader.get(i++), line.toLowerCase().replace(" ", "_"));
+        } else {
+            try (BufferedReader br =
+                         new BufferedReader(new InputStreamReader(getAssets().open("sorted.txt")))) {
+                String line;
+                int i = 0;
+                while ((line = br.readLine()) != null) {
+                    listDataHeader.add(line);
+                    listDataChild.put(listDataHeader.get(i++), line.toLowerCase().replace(" ", "_"));
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Problem reading label file!", e);
             }
-        } catch (IOException e) {
-            throw new RuntimeException("Problem reading label file!", e);
         }
-
     }
 
 

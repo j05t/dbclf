@@ -16,6 +16,7 @@ Bluetick Coonhound
 Border Collie
 Border Terrier
 Borzoi
+Boston Terrier
 Bouvier Des Flandres
 Boxer Dog
 Brabancon Griffon
@@ -33,7 +34,9 @@ Coated Wheaten Terrier
 Cocker Spaniel
 Collie
 Curly Coated Retriever
+Dachshund
 Dandie Dinmont Terrier
+Dhole
 Dingo
 Doberman
 English Foxhound
@@ -46,12 +49,13 @@ German Shepherd
 Giant Schnauzer
 Golden Retriever
 Gordon Setter
-Greater Swiss Mountain Dog
 Great Dane
 Great Pyrenees
+Greater Swiss Mountain Dog
 Groenendael Dog
 Haired Fox Terrier
 Haired Pointer
+Ibizan Hound
 Irish Setter
 Irish Terrier
 Irish Water Spaniel
@@ -67,9 +71,9 @@ Labrador Retriever
 Lakeland Terrier
 Leonberger
 Lhasa Apso
-Dachshund
 Malamute
 Malinois Dog
+Maltese Dog
 Mexican Hairless Dog
 Miniature Pinscher
 Miniature Poodle
@@ -88,10 +92,6 @@ Pug
 Redbone Coonhound
 Rhodesian Ridgeback
 Rottweiler
-Boston Terrier
-Dhole
-Ibizan Hound
-Maltese Dog
 Saint Bernard
 Saluki
 Samoyed Dog
@@ -100,6 +100,7 @@ Scotch Terrier
 Scottish Deerhound
 Sealyham Terrier
 Shetland Sheepdog
+Shih Tzu
 Siberian Husky
 Silky Terrier
 Staffordshire Bull Terrier
@@ -111,7 +112,6 @@ Tibetan Mastiff
 Tibetan Terrier
 Toy Poodle
 Toy Terrier
-Shih Tzu
 Vizsla
 Walker Hound
 Weimaraner
