@@ -77,12 +77,14 @@
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/instant_run_merged_manifests" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/javac" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/jniLibs" />
+      <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/lint" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/lint-cache" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/merged_assets" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/merged_manifests" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/prebuild" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/processed_res" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/res" />
+      <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/resources" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/rs" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/shader_assets" />
       <excludeFolder url="file://$MODULE_DIR$/gradleBuild/intermediates/shaders" />
@@ -123,8 +125,12 @@
     <orderEntry type="library" name="Gradle: com.android.support:support-fragment-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-annotations:28.0.0@jar" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:common:1.1.1@jar" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:slidingpanelayout-28.0.0-rc02" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:livedata-core-1.1.1" level="project" />
     <orderEntry type="library" name="Gradle: com.android.support:support-compat-28.0.0" level="project" />
     <orderEntry type="library" name="Gradle: android.arch.lifecycle:runtime-1.1.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:customview-28.0.0-rc02" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:coordinatorlayout-28.0.0-rc02" level="project" />
+    <orderEntry type="library" name="Gradle: com.android.support:support-core-utils-28.0.0-rc02" level="project" />
   </component>
 </module>
