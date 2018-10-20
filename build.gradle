@@ -11,7 +11,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.0'
+        classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'org.apache.httpcomponents:httpclient:4.5.5'
     }
 }
@@ -26,7 +26,7 @@ allprojects {
 
 // set to 'cmake', 'none'
 // cmake will only build for armabi-v7a
-def nativeBuildSystem = 'cmake'
+def nativeBuildSystem = 'none'
 
 // Controls output directory in APK and CPU type for Bazel builds.
 // The CMake build has only been tested with armeabi-v7a; others may not work.
@@ -54,8 +54,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 61
-        versionName "30"
+        versionCode 62
+        versionName "31"
     }
 
     if (nativeBuildSystem == 'cmake') {

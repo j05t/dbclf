@@ -669,13 +669,17 @@ public abstract class CameraActivity extends Activity
         currentRecognitions = new ArrayList<String>();
 
         if (results != null) {
-            for (final Classifier.Recognition recog : results) {
-                final String text = String.format(Locale.getDefault(), "%s: %d %%\n",
-                        recog.getTitle(), Math.round(recog.getConfidence() * 100));
-                sb.append(text);
-                currentRecognitions.add(recog.getTitle());
+            if (results.size() > 0) {
+                for (final Classifier.Recognition recog : results) {
+                    final String text = String.format(Locale.getDefault(), "%s: %d %%\n",
+                            recog.getTitle(), Math.round(recog.getConfidence() * 100));
+                    sb.append(text);
+                    currentRecognitions.add(recog.getTitle());
+                }
+            } else {
+                sb.append(getString(R.string.no_detection));
             }
-        } else sb.append("");
+        }
 
         final String finalText = sb.toString();
         runOnUiThread(() -> resultsView.setText(finalText));

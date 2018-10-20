@@ -26,4 +26,5 @@
     <string name="searchFor">Look up on Wikipedia?</string>
     <string name="no">No</string>
     <string name="yes">Yes</string>
+    <string name="no_detection">No detection</string>
 </resources>
