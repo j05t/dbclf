@@ -26,7 +26,7 @@ allprojects {
 
 // set to 'cmake', 'none'
 // cmake will only build for armabi-v7a
-def nativeBuildSystem = 'none'
+def nativeBuildSystem = 'cmake'
 
 // Controls output directory in APK and CPU type for Bazel builds.
 // The CMake build has only been tested with armeabi-v7a; others may not work.
@@ -54,7 +54,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 62
+        versionCode 63
         versionName "31"
     }
 
