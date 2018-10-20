@@ -55,7 +55,7 @@ android {
         targetSdkVersion 28
 
         versionCode 63
-        versionName "31"
+        versionName "32"
     }
 
     if (nativeBuildSystem == 'cmake') {
