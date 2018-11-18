@@ -59,7 +59,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
     private static final boolean MAINTAIN_ASPECT = true;
 
-    private static final Size DESIRED_PREVIEW_SIZE = new Size(299, 299);
+    private static final Size DESIRED_PREVIEW_SIZE = new Size(INPUT_SIZE, INPUT_SIZE);
 
     private Matrix frameToCropTransform;
 
@@ -112,12 +112,11 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         @Override
         protected List<Classifier.Recognition> doInBackground(Bitmap... bitmaps) {
             initClassifier();
-            if (classifier == null)
-                return null;
 
-            if (!isCancelled())
+            if (!isCancelled() && classifier != null)
                 return classifier.recognizeImage(bitmaps[0]);
-            else return null;
+            else
+                return null;
         }
 
         @Override
@@ -227,7 +226,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                         TensorFlowImageClassifier.create(
                                 getAssets(),
                                 MODEL_FILE,
-                                LABEL_FILE,
+                                getResources().getStringArray(R.array.breeds_array),
                                 INPUT_SIZE,
                                 IMAGE_MEAN,
                                 IMAGE_STD,

@@ -225,16 +225,13 @@ public abstract class CameraActivity extends Activity
             readyForNextImage();
         });
 
-        resultsView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
-                    return;
+        resultsView.setOnClickListener(v -> {
+            if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
+                return;
 
-                Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
-                i.putExtra("SHOW_RECOGS", true);
-                startActivity(i);
-            }
+            Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
+            i.putExtra("SHOW_RECOGS", true);
+            startActivity(i);
         });
     }
 
@@ -399,9 +396,7 @@ public abstract class CameraActivity extends Activity
             };
 
             processImage();
-        } catch (final Exception e) {
-            return;
-        }
+        } catch (final Exception e) {}
     }
 
     @Override

@@ -24,6 +24,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Vector;
@@ -64,7 +66,7 @@ public class TensorFlowImageClassifier implements Classifier {
      *
      * @param assetManager  The asset manager to be used to load assets.
      * @param modelFilename The filepath of the model GraphDef protocol buffer.
-     * @param labelFilename The filepath of label file for classes.
+     * @param labels        String array of labels.
      * @param inputSize     The input size. A square image of inputSize x inputSize is assumed.
      * @param imageMean     The assumed mean of the image values.
      * @param imageStd      The assumed std of the image values.
@@ -75,7 +77,7 @@ public class TensorFlowImageClassifier implements Classifier {
     public static Classifier create(
             AssetManager assetManager,
             String modelFilename,
-            String labelFilename,
+            String[] labels,
             int inputSize,
             int imageMean,
             float imageStd,
@@ -86,7 +88,7 @@ public class TensorFlowImageClassifier implements Classifier {
         c.outputName = outputName;
 
         // Read the label names into memory.
-        final String actualFilename = labelFilename.split("file:///android_asset/")[1];
+/*        final String actualFilename = labelFilename.split("file:///android_asset/")[1];
 
         try (BufferedReader br =
                      new BufferedReader(new InputStreamReader(assetManager.open(actualFilename)))) {
@@ -96,7 +98,9 @@ public class TensorFlowImageClassifier implements Classifier {
             }
         } catch (IOException e) {
             throw new RuntimeException("Problem reading label file!", e);
-        }
+        }*/
+
+        Collections.addAll(c.labels, labels);
 
         c.inferenceInterface = new TensorFlowInferenceInterface(assetManager, modelFilename);
 
