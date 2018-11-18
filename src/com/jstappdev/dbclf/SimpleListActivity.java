@@ -1,5 +1,6 @@
 package com.jstappdev.dbclf;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,10 +13,8 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -41,6 +40,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
     }
 
     // display side index
+    @SuppressLint("InflateParams")
     private void displayIndex() {
         LinearLayout indexLayout = findViewById(R.id.side_index);
 
@@ -132,26 +132,20 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         listDataHeader = new ArrayList<>();
         listDataChild = new HashMap<>();
 
+        Collections.addAll(listDataHeader, getResources().getStringArray(R.array.breeds_array));
+        String[] fileNames = getResources().getStringArray(R.array.file_names);
+
+        // add file names
+        for (int i = 0; i < listDataHeader.size(); i++) {
+            listDataChild.put(listDataHeader.get(i), fileNames[i]);
+        }
+
+        Collections.sort(listDataHeader);
+
         if (showRecogsOnly) {
-            int i = 0;
-            for (String r : CameraActivity.currentRecognitions) {
-                listDataHeader.add(r);
-                listDataChild.put(listDataHeader.get(i++), r.toLowerCase().replace(" ", "_"));
-            }
-        } else {
-            try (BufferedReader br =
-                         new BufferedReader(new InputStreamReader(getAssets().open("sorted.txt")))) {
-                String line;
-                int i = 0;
-                while ((line = br.readLine()) != null) {
-                    listDataHeader.add(line);
-                    listDataChild.put(listDataHeader.get(i++), line.toLowerCase().replace(" ", "_"));
-                }
-            } catch (IOException e) {
-                throw new RuntimeException("Problem reading label file!", e);
-            }
+            listDataHeader = new ArrayList<>();
+            listDataHeader.addAll(CameraActivity.currentRecognitions);
         }
     }
-
 
 }

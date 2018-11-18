@@ -114,13 +114,13 @@ public class ListAdapter extends BaseExpandableListAdapter {
         InputStream istr;
         Bitmap bitmap = null;
         try {
-            istr = assetManager.open(filePath + ".jpg");
+            istr = assetManager.open(filePath);
             bitmap = BitmapFactory.decodeStream(istr);
         } catch (IOException e) {
             try {
                 istr = assetManager.open("nodata.jpg");
                 bitmap = BitmapFactory.decodeStream(istr);
-            } catch (IOException e1) {
+            } catch (IOException ignored) {
             }
         }
         return bitmap;
