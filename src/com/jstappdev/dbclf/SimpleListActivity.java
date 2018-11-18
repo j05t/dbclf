@@ -135,16 +135,16 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         Collections.addAll(listDataHeader, getResources().getStringArray(R.array.breeds_array));
         String[] fileNames = getResources().getStringArray(R.array.file_names);
 
-        // add file names
+        // load file names
         for (int i = 0; i < listDataHeader.size(); i++) {
             listDataChild.put(listDataHeader.get(i), fileNames[i]);
         }
 
-        Collections.sort(listDataHeader);
-
         if (showRecogsOnly) {
             listDataHeader = new ArrayList<>();
             listDataHeader.addAll(CameraActivity.currentRecognitions);
+        } else {
+            Collections.sort(listDataHeader);
         }
     }
 
