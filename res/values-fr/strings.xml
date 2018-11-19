@@ -2,27 +2,27 @@
 <resources>
     <string name="app_name">Identify Dog Breeds</string>
     <string name="activity_name_classification">Identifiez les races de chiens</string>
-    <string name="camera_error">Cet appareil ne prend pas en charge l'API Camera2.</string>
+    <string name="camera_error">Cet appareil ne prend pas en charge l\'API Camera2.</string>
     <string name="continuous_on">On</string>
     <string name="continuous_off">Off</string>
     <string name="from_gallery">Depuis la Galerie..</string>
     <string name="about_message"><![CDATA[
     <h1>Identify Dog Breeds</h1>
-    <p>Identifiez plus d'une centaine de races de chiens différentes avec votre smartphone.</p>
-    <p>Cliquez sur le bouton de l'appareil photo ou chargez une image à partir de la galerie d'images pour analyser une image. Appuyez sur l'écran pour fermer le résultat affiché ou utilisez le bouton Partager pour partager une capture d'écran.</p>
-    <p>Activer les prédictions continues et garder le chien dans le cercle pour obtenir le résultat en direct. L'application indique jusqu'à trois prédictions jugées les plus correctes. Ce résultat n'a aucune valeur scientifique.</p>
-    <p>Si vous aimez cette application, passez à la version premium qui permet l'identification de plus de deux cents races de chiens différentes avec une précision plus accrue : https://play.google.com/store/apps/details?id=com.jstappdev.identify_dog_breeds_pro</p>
+    <p>Identifiez plus d\'une centaine de races de chiens différentes avec votre smartphone.</p>
+    <p>Cliquez sur le bouton de l\'appareil photo ou chargez une image à partir de la galerie d\'images pour analyser une image. Appuyez sur l\'écran pour fermer le résultat affiché ou utilisez le bouton Partager pour partager une capture d\'écran.</p>
+    <p>Activer les prédictions continues et garder le chien dans le cercle pour obtenir le résultat en direct. L\'application indique jusqu\'à trois prédictions jugées les plus correctes. Ce résultat n\'a aucune valeur scientifique.</p>
+    <p>Si vous aimez cette application, passez à la version premium qui permet l\'identification de plus de deux cents races de chiens différentes avec une précision plus accrue : https://play.google.com/store/apps/details?id=com.jstappdev.identify_dog_breeds_pro</p>
     <h2>Remerciements</h2>
     <p>Basé sur une version étendue de la base de données Stanford Dogs. Icônes créées par Pause08, Smashicons, Freepik de www.flaticon.com.
-    <p>Apache License 2.0. Code source disponible à github.com/j05t/dbclf. Images issues de Wikipedia. Traduction française par Clément THONON.</p>
+    <p>Apache License 2.0. Code source disponible à github.com/j05t/dbclf. Images issues de Wikipedia. Traduction française par Clément Thonon.</p>
     ]]></string>
     <string name="about_menu">A propos</string>
     <string name="exit_menu">Quitter</string>
     <string name="error_tf_init">Erreur de mémoire insuffisante. Essayez de fermer quelques applications en arrière-plan.</string>
-    <string name="running_prediction">Analyse de l'image..</string>
+    <string name="running_prediction">Analyse de l\'image..</string>
     <string name="share_with">Partager avec..</string>
     <string name="list_breeds">Races identifiables</string>
-    <string name="list_empty">Il n'y a pas de données</string>
+    <string name="list_empty">Il n\'y a pas de données</string>
     <string name="searchFor">Regarder sur Wikipedia ?</string>
     <string name="no">Non</string>
     <string name="yes">Oui</string>
@@ -70,7 +70,7 @@
         <item>Foxhound anglais</item>
         <item>Setter Llewellin</item>
         <item>Springer anglais</item>
-        <item>Bouvier de l'Entlebuch</item>
+        <item>Bouvier de l\'Entlebuch</item>
         <item>Esquimau américain</item>
         <item>Bouledogue</item>
         <item>Berger allemand</item>
@@ -85,7 +85,7 @@
         <item>Braque allemand à poil court</item>
         <item>Setter irlandais rouge</item>
         <item>Terrier irlandais</item>
-        <item>Épagneul d'eau irlandais</item>
+        <item>Épagneul d\'eau irlandais</item>
         <item>Irish wolfhound</item>
         <item>Petit lévrier italien</item>
         <item>Épagneul japonais</item>
@@ -99,7 +99,7 @@
         <item>Leonberger</item>
         <item>Lhassa Apso</item>
         <item>Teckel</item>
-        <item>Malamute de l'Alaska</item>
+        <item>Malamute de l\'Alaska</item>
         <item>Malinois</item>
         <item>Xoloitzcuintle</item>
         <item>Pinscher nain</item>
@@ -107,7 +107,7 @@
         <item>Schnauzer nain</item>
         <item>Terre-neuve</item>
         <item>Norfolk Terrier</item>
-        <item>Chien d'élan norvégien gris</item>
+        <item>Chien d\'élan norvégien gris</item>
         <item>Norwich Terrier</item>
         <item>Bobtail</item>
         <item>Chien à loutre</item>
@@ -121,7 +121,7 @@
         <item>Rottweiler</item>
         <item>Boston Terrier</item>
         <item>Dhole</item>
-        <item>Podenco d'Ibiza</item>
+        <item>Podenco d\'Ibiza</item>
         <item>Bichon maltais</item>
         <item>Saint-bernard</item>
         <item>Lévrier persan</item>
