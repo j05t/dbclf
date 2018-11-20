@@ -13,11 +13,13 @@ import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
 public class SimpleListActivity extends Activity implements View.OnClickListener {
 
@@ -144,7 +146,9 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
             listDataHeader = new ArrayList<>();
             listDataHeader.addAll(CameraActivity.currentRecognitions);
         } else {
-            Collections.sort(listDataHeader);
+            Collator coll = Collator.getInstance(Locale.getDefault());
+            coll.setStrength(Collator.PRIMARY);
+            Collections.sort(listDataHeader, coll);
         }
     }
 
