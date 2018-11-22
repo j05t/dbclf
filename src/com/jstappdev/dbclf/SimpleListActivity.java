@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
@@ -14,7 +15,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.Collator;
+import java.util.AbstractCollection;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -23,11 +26,14 @@ import java.util.Locale;
 
 public class SimpleListActivity extends Activity implements View.OnClickListener {
 
+    private final List<String> translations = Arrays.asList("en", "de", "es", "fr");
+
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, String> listDataChild;
     private Boolean showRecogsOnly;
     private HashMap<String, Integer> mapIndex;  // hashmap for side index
+    private static String wikiLangSubDomain = "";
 
     // create list for side index
     private void getIndexList() {
@@ -72,7 +78,12 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        Intent intent = getIntent();
+        String lang = Locale.getDefault().getLanguage();
+        if (translations.contains(lang)) {
+            wikiLangSubDomain = lang + ".";
+        }
+
+        final Intent intent = getIntent();
         showRecogsOnly = intent.getBooleanExtra("SHOW_RECOGS", false);
 
         expListView = findViewById(R.id.lvExp);
@@ -88,8 +99,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
             DialogInterface.OnClickListener dialogClickListener = (dialog, which) -> {
                 switch (which) {
                     case DialogInterface.BUTTON_POSITIVE:
-                        final String url = "https://wikipedia.org/w/index.php?search="
-                                + searchText + "&title=Special:Search";
+                        final String url = String.format("https://%swikipedia.org/w/index.php?search=%s&title=Special:Search", wikiLangSubDomain, searchText);
 
                         Intent i = new Intent(Intent.ACTION_VIEW);
                         i.setData(Uri.parse(url));
