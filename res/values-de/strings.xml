@@ -30,8 +30,8 @@
 
     <string-array name="breeds_array">
         <item>Affenpinscher</item>
-        <item>Afghan Hound</item>
-        <item>African Hunting Dog</item>
+        <item>Afghanischer Windhund</item>
+        <item>Afrikanischer Wildhund</item>
         <item>Airedale Terrier</item>
         <item>American Staffordshire Terrier</item>
         <item>Appenzeller Sennenhund</item>
@@ -48,7 +48,7 @@
         <item>Border Terrier</item>
         <item>Borzoi</item>
         <item>Bouvier Des Flandres</item>
-        <item>Boxer Dog</item>
+        <item>Deutscher Boxer</item>
         <item>Brabancon Griffon</item>
         <item>Briard</item>
         <item>Brittany Spaniel</item>
@@ -66,23 +66,23 @@
         <item>Curly Coated Retriever</item>
         <item>Dandie Dinmont Terrier</item>
         <item>Dingo</item>
-        <item>Doberman</item>
+        <item>Dobermann</item>
         <item>English Foxhound</item>
         <item>English Setter</item>
         <item>English Springer Spaniel</item>
-        <item>Entlebucher Mountain Dog</item>
+        <item>Entlebucher Sennenhund</item>
         <item>Eskimo Dog</item>
-        <item>French Bulldog</item>
+        <item>Französische Bulldogge</item>
         <item>Deutscher Schäferhund</item>
-        <item>Giant Schnauzer</item>
+        <item>Riesenschnauzer</item>
         <item>Golden Retriever</item>
         <item>Gordon Setter</item>
-        <item>Greater Swiss Mountain Dog</item>
-        <item>Great Dane</item>
-        <item>Great Pyrenees</item>
-        <item>Groenendael Dog</item>
-        <item>Haired Fox Terrier</item>
-        <item>Haired Pointer</item>
+        <item>Grosser Schweizer Sennenhund</item>
+        <item>Deutsche Dogge</item>
+        <item>Chien de Montagne des Pyrénées</item>
+        <item>Groenendael</item>
+        <item>Foxterrier</item>
+        <item>Deutsch Kurzhaar</item>
         <item>Irish Setter</item>
         <item>Irish Terrier</item>
         <item>Irish Water Spaniel</item>
@@ -98,34 +98,34 @@
         <item>Lakeland Terrier</item>
         <item>Leonberger</item>
         <item>Lhasa Apso</item>
-        <item>Dachshund</item>
-        <item>Malamute</item>
-        <item>Malinois Dog</item>
-        <item>Mexican Hairless Dog</item>
+        <item>Dackel</item>
+        <item>Alaskan Malamute</item>
+        <item>Malinois</item>
+        <item>Xoloitzcuintle</item>
         <item>Miniature Pinscher</item>
-        <item>Miniature Poodle</item>
-        <item>Miniature Schnauzer</item>
-        <item>Newfoundland Dog</item>
+        <item>Zwergpudel</item>
+        <item>Zwergschnauzer</item>
+        <item>Neufundländer</item>
         <item>Norfolk Terrier</item>
         <item>Norwegian Elkhound</item>
         <item>Norwich Terrier</item>
-        <item>Old English Sheepdog</item>
-        <item>Otterhound</item>
-        <item>Papillon Dog</item>
+        <item>Bobtail</item>
+        <item>Otterhund</item>
+        <item>Kontinentaler Zwergspaniel</item>
         <item>Pekingese</item>
         <item>Pembroke Welsh Corgi</item>
-        <item>Pomeranian</item>
-        <item>Pug</item>
+        <item>Deutsche Spitze</item>
+        <item>Mops</item>
         <item>Redbone Coonhound</item>
         <item>Rhodesian Ridgeback</item>
         <item>Rottweiler</item>
         <item>Boston Terrier</item>
-        <item>Dhole</item>
+        <item>Rothund</item>
         <item>Ibizan Hound</item>
         <item>Maltese Dog</item>
         <item>Saint Bernard</item>
         <item>Saluki</item>
-        <item>Samoyed Dog</item>
+        <item>Samojede</item>
         <item>Schipperke</item>
         <item>Scotch Terrier</item>
         <item>Scottish Deerhound</item>
@@ -140,7 +140,7 @@
         <item>Tan Coonhound</item>
         <item>Tibetan Mastiff</item>
         <item>Tibetan Terrier</item>
-        <item>Toy Poodle</item>
+        <item>Toy Pudel</item>
         <item>Toy Terrier</item>
         <item>Shih Tzu</item>
         <item>Vizsla</item>
