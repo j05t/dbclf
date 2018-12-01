@@ -26,7 +26,7 @@ import java.util.Locale;
 
 public class SimpleListActivity extends Activity implements View.OnClickListener {
 
-    private final List<String> translations = Arrays.asList("en", "de", "es", "fr");
+    private final List<String> translations = Arrays.asList("en", "de", "fr");
 
     private ExpandableListView expListView;
     private List<String> listDataHeader;

@@ -48,19 +48,19 @@
         <item>Border Terrier</item>
         <item>Borzoi</item>
         <item>Bouvier Des Flandres</item>
-        <item>Boxer Dog</item>
-        <item>Brabancon Griffon</item>
+        <item>Boxer (dog)</item>
+        <item>Griffon Bruxellois</item>
         <item>Briard</item>
         <item>Brittany Spaniel</item>
-        <item>Bull Mastiff</item>
+        <item>Bullmastiff</item>
         <item>Cairn Terrier</item>
         <item>Cardigan Welsh Corgi</item>
         <item>Chesapeake Bay Retriever</item>
-        <item>Chihuahua Dog</item>
+        <item>Chihuahua (dog)</item>
         <item>Chow Chow</item>
         <item>Clumber Spaniel</item>
-        <item>Coated Retriever</item>
-        <item>Coated Wheaten Terrier</item>
+        <item>Flat-coated Retriever</item>
+        <item>Soft-coated Wheaten Terrier</item>
         <item>Cocker Spaniel</item>
         <item>Collie</item>
         <item>Curly Coated Retriever</item>
@@ -80,15 +80,15 @@
         <item>Greater Swiss Mountain Dog</item>
         <item>Great Dane</item>
         <item>Great Pyrenees</item>
-        <item>Groenendael Dog</item>
-        <item>Haired Fox Terrier</item>
-        <item>Haired Pointer</item>
+        <item>Groenendael dog</item>
+        <item>Fox Terrier</item>
+        <item>German Shorthaired Pointer</item>
         <item>Irish Setter</item>
         <item>Irish Terrier</item>
         <item>Irish Water Spaniel</item>
         <item>Irish Wolfhound</item>
         <item>Italian Greyhound</item>
-        <item>Japanese Spaniel</item>
+        <item>Japanese Chin</item>
         <item>Keeshond</item>
         <item>Kelpie</item>
         <item>Kerry Blue Terrier</item>
@@ -99,19 +99,19 @@
         <item>Leonberger</item>
         <item>Lhasa Apso</item>
         <item>Dachshund</item>
-        <item>Malamute</item>
-        <item>Malinois Dog</item>
+        <item>Alaskan Malamute</item>
+        <item>Malinois dog</item>
         <item>Mexican Hairless Dog</item>
         <item>Miniature Pinscher</item>
         <item>Miniature Poodle</item>
         <item>Miniature Schnauzer</item>
-        <item>Newfoundland Dog</item>
+        <item>Newfoundland dog</item>
         <item>Norfolk Terrier</item>
         <item>Norwegian Elkhound</item>
         <item>Norwich Terrier</item>
         <item>Old English Sheepdog</item>
         <item>Otterhound</item>
-        <item>Papillon Dog</item>
+        <item>Papillon dog</item>
         <item>Pekingese</item>
         <item>Pembroke Welsh Corgi</item>
         <item>Pomeranian</item>
@@ -122,10 +122,10 @@
         <item>Boston Terrier</item>
         <item>Dhole</item>
         <item>Ibizan Hound</item>
-        <item>Maltese Dog</item>
+        <item>Maltese dog</item>
         <item>Saint Bernard</item>
         <item>Saluki</item>
-        <item>Samoyed Dog</item>
+        <item>Samoyed dog</item>
         <item>Schipperke</item>
         <item>Scotch Terrier</item>
         <item>Scottish Deerhound</item>
@@ -137,14 +137,14 @@
         <item>Standard Poodle</item>
         <item>Standard Schnauzer</item>
         <item>Sussex Spaniel</item>
-        <item>Tan Coonhound</item>
+        <item>Black and Tan Coonhound</item>
         <item>Tibetan Mastiff</item>
         <item>Tibetan Terrier</item>
         <item>Toy Poodle</item>
-        <item>Toy Terrier</item>
+        <item>English Toy Terrier (Black &amp; Tan)</item>
         <item>Shih Tzu</item>
         <item>Vizsla</item>
-        <item>Walker Hound</item>
+        <item>Treeing Walker Coonhound</item>
         <item>Weimaraner</item>
         <item>Welsh Springer Spaniel</item>
         <item>West Highland White Terrier</item>
