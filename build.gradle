@@ -1,5 +1,8 @@
-// The cmake build only creates libtensorflow_demo.so. In this situation,
-// libtensorflow_inference.so will be acquired via the tensorflow.aar dependency.
+// set to 'armabi-v7a', 'all'
+// armabi-v7a will only build for armabi-v7a (most smartphones)
+// all will build for arm64-v8a, armeabi-v7a, x86, x86_64
+def buildFor = 'armabi-v7a'
+
 
 project.buildDir = 'gradleBuild'
 getProject().setBuildDir('gradleBuild')
@@ -24,24 +27,8 @@ allprojects {
     }
 }
 
-// set to 'cmake', 'none'
-// cmake will only build for armabi-v7a
-def nativeBuildSystem = 'none'
 
-// Controls output directory in APK and CPU type for Bazel builds.
-// The CMake build has only been tested with armeabi-v7a; others may not work.
-def cpuType = 'armeabi-v7a'
-
-// Output directory in the local directory for packaging into the APK.
-def nativeOutDir = 'libs/' + cpuType
-
-// Default to building with cmake and override if requested.
-def nativeBuildRule = 'cmake'
-def inferenceLibPath = '../../../bazel-bin/tensorflow/contrib/android/libtensorflow_inference.so'
-
-// import DownloadModels task
 project.ext.ASSET_DIR = projectDir.toString() + '/assets'
-project.ext.TMP_DIR = project.buildDir.toString() + '/downloads'
 
 apply plugin: 'com.android.application'
 
@@ -54,15 +41,14 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 64
+        versionCode 65
         versionName "33"
     }
 
-    if (nativeBuildSystem == 'cmake') {
+    if (buildFor == 'armabi-v7a') {
         defaultConfig {
-
             ndk {
-                abiFilters "${cpuType}"
+                abiFilters 'armeabi-v7a'
             }
         }
     }
@@ -95,13 +81,6 @@ android {
     }
 }
 
-task copyNativeLibs(type: Copy) {
-    from inferenceLibPath
-    into nativeOutDir
-    duplicatesStrategy = 'include'
-    dependsOn nativeBuildRule
-    fileMode 0644
-}
 
 dependencies {
     implementation 'org.tensorflow:tensorflow-android:1.8.0'
