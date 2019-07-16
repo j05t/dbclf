@@ -1,6 +1,6 @@
 // set to 'armabi-v7a', 'all', 'arm64-v8a'
 // armabi-v7a will only build for armabi-v7a (most smartphones)
-// all will build for arm64-v8a, armeabi-v7a, x86, x86_64
+// all will build for arm64-v8a, armabi-v7a, x86, x86_64
 def buildFor = 'armabi-v7a'
 
 
@@ -15,7 +15,7 @@ buildscript {
 
     dependencies {
         classpath 'com.android.tools.build:gradle:3.2.1'
-        classpath 'org.apache.httpcomponents:httpclient:4.5.5'
+        classpath 'org.apache.httpcomponents:httpclient:4.5.6'
     }
 }
 
@@ -41,8 +41,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
 
-        versionCode 67
-        versionName "34"
+        versionCode 71
+        versionName "35"
     }
 
     if (buildFor == 'armabi-v7a') {

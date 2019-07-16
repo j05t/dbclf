@@ -26,7 +26,7 @@
     <string name="searchFor">Regarder sur Wikipedia ?</string>
     <string name="no">Non</string>
     <string name="yes">Oui</string>
-    <string name="no_detection">Pas de détection.</string>
+    <string name="no_detection">Pas de détection</string>
 
     <string-array name="breeds_array">
         <item>Affenpinscher</item>

@@ -9,36 +9,31 @@
 
     <ToggleButton
         android:id="@+id/continuousInferenceButton"
-        style="@android:style/Widget.Holo.Button.Toggle"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
         android:layout_alignParentBottom="true"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_marginBottom="32dp"
         android:layout_marginLeft="32dp"
-        android:src="@android:drawable/ic_menu_rotate"
-        android:textOff="@string/continuous_off"
-        android:textOn="@string/continuous_on"
+        android:layout_marginBottom="46dp"
+        android:background="@drawable/roundedbutton"
         android:translationZ="50dp" />
 
     <ImageButton
         android:id="@+id/cameraButton"
-        style="@android:style/Widget.Holo.ImageButton"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
-        android:layout_alignParentEnd="true"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
         android:layout_alignTop="@+id/continuousInferenceButton"
-        android:layout_marginRight="32dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/roundedbutton"
         android:src="@drawable/camera_icon"
         android:translationZ="50dp" />
 
     <ImageButton
         android:id="@+id/shareButton"
-        style="@android:style/Widget.Holo.ImageButton"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_alignTop="@+id/continuousInferenceButton"
-        android:layout_width="72dp"
-        android:layout_height="72dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
+        android:background="@drawable/roundedbutton"
         android:src="@android:drawable/ic_menu_share"
         android:translationZ="200dp" />
 
@@ -47,10 +42,12 @@
         android:layout_width="match_parent"
         android:layout_height="96dp"
         android:layout_alignParentTop="true"
-        android:background="@color/transparent"
+        android:background="@drawable/button_background_selector"
+        android:elevation="@android:dimen/app_icon_size"
+        android:enabled="false"
         android:paddingLeft="5dp"
         android:textColor="@android:color/primary_text_dark"
-        android:textSize="23dp"
+        android:textSize="22dp"
         android:translationZ="200dp" />
 
     <com.github.mikephil.charting.charts.PieChart
@@ -66,7 +63,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:background="@drawable/blackout_transition"
-        android:contentDescription="Image loaded from gallery is displayed here"
         android:translationZ="50dp"
         android:visibility="gone" />
 
@@ -81,7 +77,6 @@
         android:translationZ="200dp"
         android:visibility="gone" />
 
-
     <FrameLayout
         android:id="@+id/pnlFlash"
         android:layout_width="fill_parent"
@@ -89,26 +84,5 @@
         android:background="#FFF"
         android:translationZ="200dp"
         android:visibility="gone" />
-
-
-    <!-- top overlay for first time instructions -->
-    <RelativeLayout
-        android:id="@+id/firstTimeInstructionsTopLayer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:translationZ="300dp">
-
-        <ImageView
-            android:id="@+id/firstTimeInstructions"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:src="@drawable/ic_first_time_instructions" />
-
-
-    </RelativeLayout>
 
 </RelativeLayout>

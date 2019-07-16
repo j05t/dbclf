@@ -24,7 +24,6 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -45,7 +44,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.support.v4.content.FileProvider;
+import android.support.annotation.NonNull;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -57,7 +56,6 @@ import android.util.Size;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
@@ -66,7 +64,6 @@ import android.view.animation.Animation;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -78,9 +75,6 @@ import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.jstappdev.dbclf.env.ImageUtils;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +89,7 @@ public abstract class CameraActivity extends Activity
     private static final int PERMISSIONS_REQUEST = 1;
     private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
     private static final String PERMISSION_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String PERMISSION_STORAGE_WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private Handler handler;
     private HandlerThread handlerThread;
@@ -120,7 +115,6 @@ public abstract class CameraActivity extends Activity
     ImageButton cameraButton, shareButton;
     ToggleButton continuousInferenceButton;
     ImageView imageViewFromGallery;
-    RelativeLayout firstTimeInstructionsTopLayer;
     ProgressBar progressBar;
 
     static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
@@ -129,6 +123,8 @@ public abstract class CameraActivity extends Activity
 
     protected ClassifierActivity.InferenceTask inferenceTask;
 
+    abstract void handleSendImage(Intent intent);
+
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(null);
@@ -136,16 +132,14 @@ public abstract class CameraActivity extends Activity
 
         setContentView(R.layout.activity_camera);
 
-        firstTimeInstructionsTopLayer = findViewById(R.id.firstTimeInstructionsTopLayer);
-
-        // this will show @drawable/ic_first_time_instructions.xml SVG picture
-        if (isFirstTime()) firstTimeInstructionsTopLayer.setVisibility(View.INVISIBLE);
-
         setupButtons();
         setupPieChart();
 
-        if (hasPermission()) setFragment();
-        else requestPermission();
+        if (!hasPermission(PERMISSION_CAMERA)) {
+            requestPermission(PERMISSION_CAMERA);
+        } else {
+            setFragment();
+        }
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -155,6 +149,24 @@ public abstract class CameraActivity extends Activity
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if (type.startsWith("image/")) {
                 handleSendImage(intent); // Handle single image being sent
+            }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+        if (requestCode == PERMISSIONS_REQUEST && grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            switch (permissions[0]) {
+                case PERMISSION_CAMERA:
+                    setFragment();
+                    break;
+                case PERMISSION_STORAGE:
+                    pickImage();
+                    break;
+                case PERMISSION_STORAGE_WRITE:
+                    shareButton.callOnClick();
+                    break;
             }
         }
     }
@@ -173,6 +185,11 @@ public abstract class CameraActivity extends Activity
         shareButton.setVisibility(View.GONE);
 
         cameraButton.setOnClickListener(v -> {
+            if (!hasPermission(PERMISSION_CAMERA)) {
+                requestPermission(PERMISSION_CAMERA);
+                return;
+            }
+
             final View pnlFlash = findViewById(R.id.pnlFlash);
 
             cameraButton.setEnabled(false);
@@ -207,12 +224,17 @@ public abstract class CameraActivity extends Activity
         });
 
         continuousInferenceButton.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            if (!hasPermission(PERMISSION_CAMERA)) requestPermission(PERMISSION_CAMERA);
+
             imageViewFromGallery.setVisibility(View.GONE);
             continuousInference = isChecked;
 
             if (!continuousInference)
                 if (inferenceTask != null)
                     inferenceTask.cancel(true);
+
+            if (!isChecked)
+                resultsView.setEnabled(false);
 
             //if (imageSet)
             cameraButton.setEnabled(true);
@@ -233,24 +255,6 @@ public abstract class CameraActivity extends Activity
             i.putExtra("SHOW_RECOGS", true);
             startActivity(i);
         });
-    }
-
-    abstract void handleSendImage(Intent intent);
-
-    private boolean isFirstTime() {
-        final SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        boolean ranBefore = preferences.getBoolean("RanBefore", false);
-        if (!ranBefore) {
-            SharedPreferences.Editor editor = preferences.edit();
-            editor.putBoolean("RanBefore", true);
-            editor.apply();
-            firstTimeInstructionsTopLayer.setVisibility(View.VISIBLE);
-            firstTimeInstructionsTopLayer.setOnTouchListener((View v, MotionEvent event) -> {
-                firstTimeInstructionsTopLayer.setVisibility(View.INVISIBLE);
-                return false;
-            });
-        }
-        return ranBefore;
     }
 
     @Override
@@ -286,9 +290,12 @@ public abstract class CameraActivity extends Activity
                 if (inferenceTask != null)
                     inferenceTask.cancel(true);
 
-                final Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                continuousInferenceButton.setChecked(false);
-                startActivityForResult(i, PICK_IMAGE);
+                if (!hasPermission(PERMISSION_STORAGE)) {
+                    requestPermission(PERMISSION_STORAGE);
+                    return false;
+                }
+
+                pickImage();
                 break;
             case R.id.list_breeds:
                 startActivity(new Intent(this, SimpleListActivity.class));
@@ -301,6 +308,12 @@ public abstract class CameraActivity extends Activity
         }
 
         return true;
+    }
+
+    private void pickImage() {
+        final Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        continuousInferenceButton.setChecked(false);
+        startActivityForResult(i, PICK_IMAGE);
     }
 
     protected int[] getRgbBytes() {
@@ -396,7 +409,8 @@ public abstract class CameraActivity extends Activity
             };
 
             processImage();
-        } catch (final Exception e) {}
+        } catch (final Exception e) {
+        }
     }
 
     @Override
@@ -430,7 +444,7 @@ public abstract class CameraActivity extends Activity
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf"));
         mChart.setCenterText(generateCenterSpannableText());
         mChart.setExtraOffsets(14, 0.f, 14, 0.f);
-        mChart.setHoleRadius(80);
+        mChart.setHoleRadius(85);
         mChart.setHoleColor(Color.TRANSPARENT);
         mChart.setCenterTextSizePixels(23);
         mChart.setHovered(true);
@@ -474,7 +488,7 @@ public abstract class CameraActivity extends Activity
             handlerThread.join();
             handlerThread = null;
             handler = null;
-        } catch (final InterruptedException e) {
+        } catch (final InterruptedException ignored) {
         }
 
         super.onPause();
@@ -496,37 +510,17 @@ public abstract class CameraActivity extends Activity
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(
-            final int requestCode, final String[] permissions, final int[] grantResults) {
-        if (requestCode == PERMISSIONS_REQUEST) {
-            if (grantResults.length > 0
-                    && grantResults[0] == PackageManager.PERMISSION_GRANTED
-                    && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-                setFragment();
-            } else {
-                requestPermission();
-            }
-        }
-    }
-
-    private boolean hasPermission() {
+    private boolean hasPermission(final String permission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return checkSelfPermission(PERMISSION_CAMERA) == PackageManager.PERMISSION_GRANTED &&
-                    checkSelfPermission(PERMISSION_STORAGE) == PackageManager.PERMISSION_GRANTED;
+            return checkSelfPermission(permission) == PackageManager.PERMISSION_GRANTED;
         } else {
             return true;
         }
     }
 
-    private void requestPermission() {
+    private void requestPermission(final String permission) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (shouldShowRequestPermissionRationale(PERMISSION_CAMERA) ||
-                    shouldShowRequestPermissionRationale(PERMISSION_STORAGE)) {
-                Toast.makeText(CameraActivity.this,
-                        "Camera AND read external storage permission are required for this app", Toast.LENGTH_LONG).show();
-            }
-            requestPermissions(new String[]{PERMISSION_CAMERA, PERMISSION_STORAGE}, PERMISSIONS_REQUEST);
+            requestPermissions(new String[]{permission}, PERMISSIONS_REQUEST);
         }
     }
 
@@ -664,6 +658,13 @@ public abstract class CameraActivity extends Activity
         currentRecognitions = new ArrayList<String>();
 
         if (results != null) {
+            resultsView.setEnabled(true);
+
+            if (!continuousInference) {
+                shareButton.setVisibility(View.VISIBLE);
+                shareButton.setEnabled(true);
+            }
+
             if (results.size() > 0) {
                 for (final Classifier.Recognition recog : results) {
                     final String text = String.format(Locale.getDefault(), "%s: %d %%\n",
@@ -674,6 +675,8 @@ public abstract class CameraActivity extends Activity
             } else {
                 sb.append(getString(R.string.no_detection));
             }
+        } else {
+            resultsView.setEnabled(false);
         }
 
         final String finalText = sb.toString();
@@ -688,7 +691,6 @@ public abstract class CameraActivity extends Activity
             for (int i = 0; i < results.size(); i++) {
                 sum += results.get(i).getConfidence();
 
-                //todo: maybe add icons from drawable
                 PieEntry entry = new PieEntry(results.get(i).getConfidence() * 100, results.get(i).getTitle());
                 entries.add(entry);
             }
@@ -779,34 +781,34 @@ public abstract class CameraActivity extends Activity
     }
 
     public Bitmap takeScreenshot() {
+        shareButton.setVisibility(View.GONE);
         View rootView = findViewById(android.R.id.content).getRootView();
         rootView.setDrawingCacheEnabled(true);
-        return rootView.getDrawingCache();
+        Bitmap screenshot = rootView.getDrawingCache();
+        shareButton.setVisibility(View.VISIBLE);
+        return screenshot;
     }
 
+    private String fileUrl;
+    private boolean alreadyAdded = false;
+
     protected void setupShareButton() {
-        shareButton.setVisibility(View.VISIBLE);
-        shareButton.setEnabled(true);
+        alreadyAdded = false;
 
         shareButton.setOnClickListener(v -> {
-            shareButton.setVisibility(View.GONE);
-            // save bitmap to cache directory
-            try {
-                File cachePath = new File(getCacheDir(), "images");
-                cachePath.mkdirs(); // don't forget to make the directory
-                FileOutputStream stream = new FileOutputStream(cachePath + "/image.png"); // overwrites this image every time
-                takeScreenshot().compress(Bitmap.CompressFormat.PNG, 100, stream);
-                stream.close();
-            } catch (IOException e) {
-                //e.printStackTrace();
+
+            if (!hasPermission(PERMISSION_STORAGE_WRITE)) {
+                requestPermission(PERMISSION_STORAGE_WRITE);
+                return;
             }
 
-            // sharebutton was removed temporarily for screenshot
-            shareButton.setVisibility(View.VISIBLE);
+            if (!alreadyAdded) {
+                final String fileName = getString(R.string.app_name) + " " + System.currentTimeMillis() / 1000;
+                fileUrl = MediaStore.Images.Media.insertImage(getContentResolver(), takeScreenshot(), fileName, currentRecognitions.toString());
+                alreadyAdded = true;
+            }
 
-            File imagePath = new File(getCacheDir(), "images");
-            File newFile = new File(imagePath, "image.png");
-            Uri contentUri = FileProvider.getUriForFile(this, "com.jstappdev.dbclf.fileprovider", newFile);
+            final Uri contentUri = Uri.parse(fileUrl);
 
             if (contentUri != null) {
                 Intent shareIntent = new Intent();
