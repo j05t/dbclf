@@ -17,7 +17,6 @@ package com.jstappdev.dbclf;
  * limitations under the License.
  */
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
@@ -38,7 +37,6 @@ import com.jstappdev.dbclf.env.ImageUtils;
 import java.io.IOException;
 import java.util.List;
 
-@SuppressLint("ValidFragment")
 public class LegacyCameraConnectionFragment extends Fragment {
     private Camera camera;
     private Camera.PreviewCallback imageListener;
@@ -50,11 +48,10 @@ public class LegacyCameraConnectionFragment extends Fragment {
     private int layout;
 
 
-    public LegacyCameraConnectionFragment(
-            final Camera.PreviewCallback imageListener, final int layout, final Size desiredSize) {
-        this.imageListener = imageListener;
-        this.layout = layout;
-        this.desiredSize = desiredSize;
+    public LegacyCameraConnectionFragment() {
+        this.imageListener = (Camera.PreviewCallback) CameraActivity.context;
+        this.layout = R.layout.camera_connection_fragment;
+        this.desiredSize = new Size(299, 299);
     }
 
 

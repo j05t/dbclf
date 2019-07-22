@@ -18,7 +18,6 @@ package com.jstappdev.dbclf;
  */
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -64,7 +63,6 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-@SuppressLint("ValidFragment")
 public class CameraConnectionFragment extends Fragment {
 
     /**
@@ -233,15 +231,13 @@ public class CameraConnectionFragment extends Fragment {
 
     private final ConnectionCallback cameraConnectionCallback;
 
-    private CameraConnectionFragment(
-            final ConnectionCallback connectionCallback,
-            final OnImageAvailableListener imageListener,
-            final int layout,
-            final Size inputSize) {
-        this.cameraConnectionCallback = connectionCallback;
-        this.imageListener = imageListener;
-        this.layout = layout;
-        this.inputSize = inputSize;
+    public CameraConnectionFragment() {
+        this.cameraConnectionCallback = (ConnectionCallback) CameraActivity.context;
+        this.imageListener = (CameraActivity) getActivity().getApplication().getApplicationContext();
+        this.layout = R.layout.camera_connection_fragment;
+        this.inputSize = new Size(MINIMUM_PREVIEW_SIZE, MINIMUM_PREVIEW_SIZE);
+
+        setCamera(((CameraActivity) getActivity().getApplication().getApplicationContext()).chooseCamera());
     }
 
     /**
@@ -297,14 +293,6 @@ public class CameraConnectionFragment extends Fragment {
         } else {
             return choices[0];
         }
-    }
-
-    public static CameraConnectionFragment newInstance(
-            final ConnectionCallback callback,
-            final OnImageAvailableListener imageListener,
-            final int layout,
-            final Size inputSize) {
-        return new CameraConnectionFragment(callback, imageListener, layout, inputSize);
     }
 
     @Override

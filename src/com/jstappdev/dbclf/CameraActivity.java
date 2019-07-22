@@ -116,6 +116,7 @@ public abstract class CameraActivity extends Activity
     ToggleButton continuousInferenceButton;
     ImageView imageViewFromGallery;
     ProgressBar progressBar;
+    public static Context context;
 
     static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
             Color.rgb(225, 151, 76), Color.rgb(132, 186, 91), Color.TRANSPARENT};
@@ -132,14 +133,10 @@ public abstract class CameraActivity extends Activity
 
         setContentView(R.layout.activity_camera);
 
+        context = this;
+
         setupButtons();
         setupPieChart();
-
-        if (!hasPermission(PERMISSION_CAMERA)) {
-            requestPermission(PERMISSION_CAMERA);
-        } else {
-            setFragment();
-        }
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -422,6 +419,13 @@ public abstract class CameraActivity extends Activity
     public synchronized void onResume() {
         super.onResume();
 
+
+        if (!hasPermission(PERMISSION_CAMERA)) {
+            requestPermission(PERMISSION_CAMERA);
+        } else {
+            setFragment();
+        }
+
         snapShot.set(false);
 
         handlerThread = new HandlerThread("inference");
@@ -434,6 +438,8 @@ public abstract class CameraActivity extends Activity
                     | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         if (!imageSet) cameraButton.setEnabled(true);
+
+
     }
 
     private void setupPieChart() {
@@ -535,7 +541,7 @@ public abstract class CameraActivity extends Activity
         return requiredLevel <= deviceLevel;
     }
 
-    private String chooseCamera() {
+    protected String chooseCamera() {
         final CameraManager manager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
         try {
             for (final String cameraId : manager.getCameraIdList()) {
@@ -579,22 +585,9 @@ public abstract class CameraActivity extends Activity
 
         Fragment fragment;
         if (useCamera2API) {
-            CameraConnectionFragment camera2Fragment =
-                    CameraConnectionFragment.newInstance(
-                            (size, rotation) -> {
-                                previewHeight = size.getHeight();
-                                previewWidth = size.getWidth();
-                                CameraActivity.this.onPreviewSizeChosen(size, rotation);
-                            },
-                            this,
-                            getLayoutId(),
-                            getDesiredPreviewFrameSize());
-
-            camera2Fragment.setCamera(cameraId);
-            fragment = camera2Fragment;
+            fragment = new CameraConnectionFragment();
         } else {
-            fragment =
-                    new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
+            fragment = new LegacyCameraConnectionFragment();
         }
 
         getFragmentManager()
@@ -648,8 +641,10 @@ public abstract class CameraActivity extends Activity
     protected abstract void initClassifier();
 
     void updateResults(List<Classifier.Recognition> results) {
-        updateResultsView(results);
-        updatePieChart(results);
+        runOnUiThread(() -> {
+            updateResultsView(results);
+            updatePieChart(results);
+        });
     }
 
     // update results on our custom textview
@@ -680,7 +675,7 @@ public abstract class CameraActivity extends Activity
         }
 
         final String finalText = sb.toString();
-        runOnUiThread(() -> resultsView.setText(finalText));
+        resultsView.setText(finalText);
     }
 
     void updatePieChart(List<Classifier.Recognition> results) {
@@ -727,7 +722,7 @@ public abstract class CameraActivity extends Activity
         //rotate to center of first slice
         mChart.setRotationAngle(end);
         mChart.setEntryLabelTextSize(16);
-        runOnUiThread(() -> mChart.invalidate());
+        mChart.invalidate();
     }
 
     protected void setImage(Bitmap image) {
