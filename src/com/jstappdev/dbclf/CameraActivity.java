@@ -137,9 +137,6 @@ public abstract class CameraActivity extends FragmentActivity
 
         setContentView(R.layout.activity_camera);
 
-        Log.d("dbclf", "onCreate()");
-
-
         setupButtons();
         setupPieChart();
 
@@ -606,7 +603,6 @@ public abstract class CameraActivity extends FragmentActivity
                     new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
         }
 
-        Log.d("dbclf", "setting new fragment " + fragment);
         fragment.setRetainInstance(false);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNow();
