@@ -30,6 +30,7 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.Toast;
@@ -111,10 +112,11 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         protected List<Classifier.Recognition> doInBackground(Bitmap... bitmaps) {
             initClassifier();
 
-            if (!isCancelled() && classifier != null)
+            if (!isCancelled() && classifier != null) {
                 return classifier.recognizeImage(bitmaps[0]);
-            else
-                return null;
+            }
+
+            return null;
         }
 
         @Override
@@ -259,10 +261,8 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
                 inferenceTask = new InferenceTask();
                 inferenceTask.execute(finalCroppedBitmap);
-
             });
         }
     }
-
 
 }

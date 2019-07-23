@@ -39,12 +39,14 @@ import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -52,6 +54,7 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.Size;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -82,7 +85,7 @@ import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 
-public abstract class CameraActivity extends Activity
+public abstract class CameraActivity extends FragmentActivity
         implements OnImageAvailableListener, Camera.PreviewCallback {
 
     static final int PICK_IMAGE = 100;
@@ -104,6 +107,8 @@ public abstract class CameraActivity extends Activity
 
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
+
+    private android.support.v4.app.Fragment fragment;
 
     TextView resultsView;
     PieChart mChart;
@@ -132,11 +137,8 @@ public abstract class CameraActivity extends Activity
 
         setContentView(R.layout.activity_camera);
 
-        if (!hasPermission(PERMISSION_CAMERA)) {
-            requestPermission(PERMISSION_CAMERA);
-        } else {
-            setFragment();
-        }
+        Log.d("dbclf", "onCreate()");
+
 
         setupButtons();
         setupPieChart();
@@ -149,6 +151,9 @@ public abstract class CameraActivity extends Activity
         // Handle single image being sent from other application
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if (type.startsWith("image/")) {
+                if (inferenceTask != null)
+                    inferenceTask.cancel(true);
+
                 handleSendImage(intent);
             }
         }
@@ -288,9 +293,6 @@ public abstract class CameraActivity extends Activity
                         setMovementMethod(LinkMovementMethod.getInstance());
                 break;
             case R.id.pick_image:
-                if (inferenceTask != null)
-                    inferenceTask.cancel(true);
-
                 if (!hasPermission(PERMISSION_STORAGE_READ)) {
                     requestPermission(PERMISSION_STORAGE_READ);
                     return false;
@@ -330,7 +332,6 @@ public abstract class CameraActivity extends Activity
     @Override
     public void onPreviewFrame(final byte[] bytes, final Camera camera) {
         if (isProcessingFrame) {
-            //LOGGER.w("Dropping frame!");
             return;
         }
 
@@ -423,6 +424,12 @@ public abstract class CameraActivity extends Activity
     public synchronized void onResume() {
         super.onResume();
 
+        if (!hasPermission(PERMISSION_CAMERA)) {
+            requestPermission(PERMISSION_CAMERA);
+        } else {
+            setFragment();
+        }
+
         snapShot.set(false);
 
         handlerThread = new HandlerThread("inference");
@@ -483,6 +490,8 @@ public abstract class CameraActivity extends Activity
     public synchronized void onPause() {
         snapShot.set(false);
         cameraButton.setEnabled(false);
+        isProcessingFrame = false;
+        progressBar.setVisibility(View.GONE);
 
         handlerThread.quitSafely();
         try {
@@ -578,7 +587,6 @@ public abstract class CameraActivity extends Activity
             finish();
         }
 
-        Fragment fragment;
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
                     CameraConnectionFragment.newInstance(
@@ -598,12 +606,10 @@ public abstract class CameraActivity extends Activity
                     new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
         }
 
+        Log.d("dbclf", "setting new fragment " + fragment);
         fragment.setRetainInstance(false);
 
-        getFragmentManager()
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNow();
     }
 
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {

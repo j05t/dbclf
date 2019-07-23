@@ -18,7 +18,6 @@ package com.jstappdev.dbclf;
  */
 
 import android.annotation.SuppressLint;
-import android.app.Fragment;
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
@@ -39,7 +38,7 @@ import java.io.IOException;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class LegacyCameraConnectionFragment extends Fragment {
+public class LegacyCameraConnectionFragment extends android.support.v4.app.Fragment {
     private Camera camera;
     private Camera.PreviewCallback imageListener;
     private Size desiredSize;

@@ -65,7 +65,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 @SuppressLint("ValidFragment")
-public class CameraConnectionFragment extends Fragment {
+public class CameraConnectionFragment extends android.support.v4.app.Fragment {
 
     /**
      * The camera preview size will be chosen to be the smallest frame by pixel size capable of
@@ -380,14 +380,10 @@ public class CameraConnectionFragment extends Fragment {
             } else {
                 textureView.setAspectRatio(previewSize.getHeight(), previewSize.getWidth());
             }
-        } catch (final CameraAccessException e) {
+        } catch (final CameraAccessException ignored) {
         } catch (final NullPointerException e) {
             // Currently an NPE is thrown when the Camera2API is used but not supported on the
             // device this code runs.
-            // TODO(andrewharp): abstract ErrorDialog/RuntimeException handling out into new method and
-            // reuse throughout app.
-            ErrorDialog.newInstance(getString(R.string.camera_error))
-                    .show(getChildFragmentManager(), FRAGMENT_DIALOG);
             throw new RuntimeException(getString(R.string.camera_error));
         }
 
