@@ -88,7 +88,7 @@ public abstract class CameraActivity extends Activity
     static final int PICK_IMAGE = 100;
     private static final int PERMISSIONS_REQUEST = 1;
     private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
-    private static final String PERMISSION_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
+    private static final String PERMISSION_STORAGE_READ = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String PERMISSION_STORAGE_WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
     private Handler handler;
@@ -116,7 +116,6 @@ public abstract class CameraActivity extends Activity
     ToggleButton continuousInferenceButton;
     ImageView imageViewFromGallery;
     ProgressBar progressBar;
-    public static Context context;
 
     static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
             Color.rgb(225, 151, 76), Color.rgb(132, 186, 91), Color.TRANSPARENT};
@@ -133,19 +132,24 @@ public abstract class CameraActivity extends Activity
 
         setContentView(R.layout.activity_camera);
 
-        context = this;
+        if (!hasPermission(PERMISSION_CAMERA)) {
+            requestPermission(PERMISSION_CAMERA);
+        } else {
+            setFragment();
+        }
 
         setupButtons();
         setupPieChart();
 
         // Get intent, action and MIME type
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
+        final Intent intent = getIntent();
+        final String action = intent.getAction();
+        final String type = intent.getType();
 
+        // Handle single image being sent from other application
         if (Intent.ACTION_SEND.equals(action) && type != null) {
             if (type.startsWith("image/")) {
-                handleSendImage(intent); // Handle single image being sent
+                handleSendImage(intent);
             }
         }
     }
@@ -158,7 +162,7 @@ public abstract class CameraActivity extends Activity
                 case PERMISSION_CAMERA:
                     setFragment();
                     break;
-                case PERMISSION_STORAGE:
+                case PERMISSION_STORAGE_READ:
                     pickImage();
                     break;
                 case PERMISSION_STORAGE_WRITE:
@@ -287,8 +291,8 @@ public abstract class CameraActivity extends Activity
                 if (inferenceTask != null)
                     inferenceTask.cancel(true);
 
-                if (!hasPermission(PERMISSION_STORAGE)) {
-                    requestPermission(PERMISSION_STORAGE);
+                if (!hasPermission(PERMISSION_STORAGE_READ)) {
+                    requestPermission(PERMISSION_STORAGE_READ);
                     return false;
                 }
 
@@ -406,7 +410,7 @@ public abstract class CameraActivity extends Activity
             };
 
             processImage();
-        } catch (final Exception e) {
+        } catch (final Exception ignored) {
         }
     }
 
@@ -418,13 +422,6 @@ public abstract class CameraActivity extends Activity
     @Override
     public synchronized void onResume() {
         super.onResume();
-
-
-        if (!hasPermission(PERMISSION_CAMERA)) {
-            requestPermission(PERMISSION_CAMERA);
-        } else {
-            setFragment();
-        }
 
         snapShot.set(false);
 
@@ -438,8 +435,6 @@ public abstract class CameraActivity extends Activity
                     | ActionBar.DISPLAY_SHOW_TITLE | ActionBar.DISPLAY_SHOW_CUSTOM);
 
         if (!imageSet) cameraButton.setEnabled(true);
-
-
     }
 
     private void setupPieChart() {
@@ -585,10 +580,25 @@ public abstract class CameraActivity extends Activity
 
         Fragment fragment;
         if (useCamera2API) {
-            fragment = new CameraConnectionFragment();
+            CameraConnectionFragment camera2Fragment =
+                    CameraConnectionFragment.newInstance(
+                            (size, rotation) -> {
+                                previewHeight = size.getHeight();
+                                previewWidth = size.getWidth();
+                                CameraActivity.this.onPreviewSizeChosen(size, rotation);
+                            },
+                            this,
+                            getLayoutId(),
+                            getDesiredPreviewFrameSize());
+
+            camera2Fragment.setCamera(cameraId);
+            fragment = camera2Fragment;
         } else {
-            fragment = new LegacyCameraConnectionFragment();
+            fragment =
+                    new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
         }
+
+        fragment.setRetainInstance(false);
 
         getFragmentManager()
                 .beginTransaction()
