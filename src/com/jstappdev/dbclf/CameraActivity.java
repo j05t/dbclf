@@ -106,8 +106,6 @@ public abstract class CameraActivity extends FragmentActivity
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
 
-    private Fragment fragment;
-
     TextView resultsView;
     PieChart mChart;
 
@@ -583,6 +581,7 @@ public abstract class CameraActivity extends FragmentActivity
             finish();
         }
 
+        Fragment fragment;
         if (useCamera2API) {
             CameraConnectionFragment camera2Fragment =
                     CameraConnectionFragment.newInstance(
