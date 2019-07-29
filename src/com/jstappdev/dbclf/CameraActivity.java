@@ -91,6 +91,7 @@ public abstract class CameraActivity extends FragmentActivity
     private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
     private static final String PERMISSION_STORAGE_READ = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String PERMISSION_STORAGE_WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    private static int cameraPermissionRequests = 0;
 
     private Handler handler;
     private HandlerThread handlerThread;
@@ -418,7 +419,12 @@ public abstract class CameraActivity extends FragmentActivity
         super.onResume();
 
         if (!hasPermission(PERMISSION_CAMERA)) {
-            requestPermission(PERMISSION_CAMERA);
+
+            if (cameraPermissionRequests++ < 3) {
+                requestPermission(PERMISSION_CAMERA);
+            } else {
+                Toast.makeText(getApplicationContext(), "Camera permission required.", Toast.LENGTH_LONG).show();
+            }
         } else {
             setFragment();
         }
