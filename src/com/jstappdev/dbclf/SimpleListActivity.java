@@ -152,7 +152,9 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
 
         if (showRecogsOnly) {
             listDataHeader = new ArrayList<>();
-            listDataHeader.addAll(CameraActivity.currentRecognitions);
+            if(null != CameraActivity.currentRecognitions) {
+                listDataHeader.addAll(CameraActivity.currentRecognitions);
+            }
         } else {
             Collator coll = Collator.getInstance(Locale.getDefault());
             coll.setStrength(Collator.PRIMARY);
