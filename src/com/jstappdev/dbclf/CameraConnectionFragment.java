@@ -23,7 +23,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -46,7 +45,6 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
-import android.support.v4.app.ActivityCompat;
 import android.util.Size;
 import android.util.SparseIntArray;
 import android.view.LayoutInflater;
@@ -55,6 +53,9 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -65,7 +66,7 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
 @SuppressLint("ValidFragment")
-public class CameraConnectionFragment extends android.support.v4.app.Fragment {
+public class CameraConnectionFragment extends Fragment {
 
     /**
      * The camera preview size will be chosen to be the smallest frame by pixel size capable of
@@ -529,7 +530,7 @@ public class CameraConnectionFragment extends android.support.v4.app.Fragment {
                                 previewRequest = previewRequestBuilder.build();
                                 captureSession.setRepeatingRequest(
                                         previewRequest, captureCallback, backgroundHandler);
-                            } catch (final CameraAccessException e) {
+                            } catch (final CameraAccessException ignored) {
                             }
                         }
 
@@ -539,7 +540,7 @@ public class CameraConnectionFragment extends android.support.v4.app.Fragment {
                         }
                     },
                     null);
-        } catch (final CameraAccessException e) {
+        } catch (final CameraAccessException ignored) {
         }
     }
 

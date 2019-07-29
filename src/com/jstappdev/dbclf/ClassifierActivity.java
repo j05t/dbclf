@@ -30,7 +30,6 @@ import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.util.Log;
 import android.util.Size;
 import android.view.View;
 import android.widget.Toast;

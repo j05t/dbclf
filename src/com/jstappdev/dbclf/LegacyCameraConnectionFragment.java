@@ -32,13 +32,15 @@ import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.fragment.app.Fragment;
+
 import com.jstappdev.dbclf.env.ImageUtils;
 
 import java.io.IOException;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class LegacyCameraConnectionFragment extends android.support.v4.app.Fragment {
+public class LegacyCameraConnectionFragment extends Fragment {
     private Camera camera;
     private Camera.PreviewCallback imageListener;
     private Size desiredSize;

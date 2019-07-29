@@ -19,9 +19,7 @@ package com.jstappdev.dbclf;
 
 import android.Manifest;
 import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -39,14 +37,11 @@ import android.media.Image.Plane;
 import android.media.ImageReader;
 import android.media.ImageReader.OnImageAvailableListener;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
-import android.support.v4.app.FragmentActivity;
 import android.text.Html;
 import android.text.SpannableString;
 import android.text.method.LinkMovementMethod;
@@ -54,7 +49,6 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
-import android.util.Log;
 import android.util.Size;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -70,6 +64,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -108,7 +106,7 @@ public abstract class CameraActivity extends FragmentActivity
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
 
-    private android.support.v4.app.Fragment fragment;
+    private Fragment fragment;
 
     TextView resultsView;
     PieChart mChart;
@@ -136,9 +134,6 @@ public abstract class CameraActivity extends FragmentActivity
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(R.layout.activity_camera);
-
-        Log.d("dbclf", "onCreate()");
-
 
         setupButtons();
         setupPieChart();
@@ -430,6 +425,7 @@ public abstract class CameraActivity extends FragmentActivity
             setFragment();
         }
 
+
         snapShot.set(false);
 
         handlerThread = new HandlerThread("inference");
@@ -606,10 +602,7 @@ public abstract class CameraActivity extends FragmentActivity
                     new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
         }
 
-        Log.d("dbclf", "setting new fragment " + fragment);
-        fragment.setRetainInstance(false);
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNow();
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNowAllowingStateLoss();
     }
 
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
