@@ -1,7 +1,7 @@
 // set to 'armabi-v7a', 'all', 'arm64-v8a'
 // armabi-v7a will only build for armabi-v7a (most smartphones)
 // all will build for arm64-v8a, armabi-v7a, x86, x86_64
-def buildFor = 'armabi-v7a'
+def buildFor = 'all'
 
 
 project.buildDir = 'gradleBuild'
@@ -14,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
+        classpath 'com.android.tools.build:gradle:3.4.2'
         classpath 'org.apache.httpcomponents:httpclient:4.5.6'
     }
 }

@@ -29,7 +29,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, String> listDataChild;
-    private Boolean showRecogsOnly;
+    private ArrayList<String> recogs;
     private HashMap<String, Integer> mapIndex;  // hashmap for side index
     private static String wikiLangSubDomain = "";
 
@@ -54,7 +54,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         List<String> indexList = new ArrayList<String>(mapIndex.keySet());
         for (String index : indexList) {
             textView = (TextView) getLayoutInflater().inflate(
-                    R.layout.side_index_item, null);
+                    R.layout.side_index_item, null, false);
             textView.setText(index);
             textView.setOnClickListener(this);
             indexLayout.addView(textView);
@@ -82,7 +82,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
         }
 
         final Intent intent = getIntent();
-        showRecogsOnly = intent.getBooleanExtra("SHOW_RECOGS", false);
+        recogs = intent.getStringArrayListExtra("recogs");
 
         expListView = findViewById(R.id.lvExp);
 
@@ -119,8 +119,8 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
 
         expListView.setAdapter(listAdapter);
 
-        // display list index
-        if (!showRecogsOnly) {
+        // display list side index if we haven't got a list of current recognitions
+        if (null == recogs) {
             getIndexList();
             displayIndex();
         }
@@ -130,7 +130,7 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
     public void onResume() {
         super.onResume();
 
-        if (showRecogsOnly)
+        if (null != recogs)
             for (int i = 0; i < listDataHeader.size(); i++)
                 expListView.expandGroup(i);
     }
@@ -150,11 +150,9 @@ public class SimpleListActivity extends Activity implements View.OnClickListener
             listDataChild.put(listDataHeader.get(i), fileNames[i]);
         }
 
-        if (showRecogsOnly) {
+        if (null != recogs) {
             listDataHeader = new ArrayList<>();
-            if(null != CameraActivity.currentRecognitions) {
-                listDataHeader.addAll(CameraActivity.currentRecognitions);
-            }
+            listDataHeader.addAll(recogs);
         } else {
             Collator coll = Collator.getInstance(Locale.getDefault());
             coll.setStrength(Collator.PRIMARY);

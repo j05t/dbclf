@@ -99,7 +99,7 @@ public abstract class CameraActivity extends FragmentActivity
     private byte[][] yuvBytes = new byte[3][];
     private int[] rgbBytes = null;
     private int yRowStride;
-    public static List<String> currentRecognitions;
+    protected ArrayList<String> currentRecognitions;
 
     protected int previewWidth = 0;
     protected int previewHeight = 0;
@@ -251,8 +251,10 @@ public abstract class CameraActivity extends FragmentActivity
             if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
                 return;
 
+            // todo: send indices here, main activity may get terminated
             Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
-            i.putExtra("SHOW_RECOGS", true);
+            i.putStringArrayListExtra("recogs", currentRecognitions);
+
             startActivity(i);
         });
     }
