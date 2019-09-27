@@ -22,6 +22,7 @@ import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -41,6 +42,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.text.Html;
 import android.text.SpannableString;
@@ -446,11 +448,21 @@ public abstract class CameraActivity extends FragmentActivity
         mChart.setTouchEnabled(false);
 
         mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf"));
-        mChart.setCenterText(generateCenterSpannableText());
+
+        // show center text only first time
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean previouslyStarted = prefs.getBoolean("showhelp", false);
+        if(!previouslyStarted) {
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("showhelp", Boolean.TRUE);
+            edit.apply();
+            mChart.setCenterText(generateCenterSpannableText());
+            mChart.setCenterTextSizePixels(23);
+        }
+
         mChart.setExtraOffsets(14, 0.f, 14, 0.f);
         mChart.setHoleRadius(85);
         mChart.setHoleColor(Color.TRANSPARENT);
-        mChart.setCenterTextSizePixels(23);
         mChart.setHovered(true);
         mChart.setDrawMarkers(false);
         mChart.setDrawCenterText(true);
@@ -577,7 +589,7 @@ public abstract class CameraActivity extends FragmentActivity
     protected void setFragment() {
         cameraId = chooseCamera();
         if (cameraId == null) {
-            Toast.makeText(this, "No Camera Detected", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "No Camera Detected", Toast.LENGTH_SHORT).show();
             finish();
         }
 
@@ -762,12 +774,9 @@ public abstract class CameraActivity extends FragmentActivity
     }
 
     public Bitmap takeScreenshot() {
-        shareButton.setVisibility(View.GONE);
-        View rootView = findViewById(android.R.id.content).getRootView();
+        final View rootView = findViewById(android.R.id.content).getRootView();
         rootView.setDrawingCacheEnabled(true);
-        Bitmap screenshot = rootView.getDrawingCache();
-        shareButton.setVisibility(View.VISIBLE);
-        return screenshot;
+        return rootView.getDrawingCache();
     }
 
     private String fileUrl;

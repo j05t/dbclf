@@ -19,11 +19,7 @@ package com.jstappdev.dbclf;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.app.DialogFragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -53,6 +49,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
@@ -260,7 +257,7 @@ public class CameraConnectionFragment extends Fragment {
         final Activity activity = getActivity();
         if (activity != null) {
             activity.runOnUiThread(
-                    () -> Toast.makeText(activity, text, Toast.LENGTH_SHORT).show());
+                    () -> Toast.makeText(requireContext().getApplicationContext(), text, Toast.LENGTH_SHORT).show());
         }
     }
 
@@ -448,6 +445,7 @@ public class CameraConnectionFragment extends Fragment {
         backgroundThread.quitSafely();
         try {
             backgroundThread.join();
+            backgroundThread.quit();
             backgroundThread = null;
             backgroundHandler = null;
         } catch (final InterruptedException e) {
@@ -503,7 +501,7 @@ public class CameraConnectionFragment extends Fragment {
                     new CameraCaptureSession.StateCallback() {
 
                         @Override
-                        public void onConfigured(final CameraCaptureSession cameraCaptureSession) {
+                        public void onConfigured(@NonNull final CameraCaptureSession cameraCaptureSession) {
                             // The camera is already closed
                             if (null == cameraDevice) {
                                 return;
@@ -527,15 +525,31 @@ public class CameraConnectionFragment extends Fragment {
                                  *                               was explicitly closed, a new session has been created
                                  *                               or the camera device has been closed.
                                  */
-                                captureSession.setRepeatingRequest(
-                                        previewRequest, captureCallback, backgroundHandler);
+                                //captureSession.setRepeatingRequest(
+                                //        previewRequest, captureCallback, backgroundHandler);
 
-                            } catch (final CameraAccessException ignored) {
+                                // https://stackoverflow.com/questions/40146485/session-has-been-closed-further-changes-are-illegal
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            if (captureSession != null)
+                                                captureSession.setRepeatingRequest(previewRequest,
+                                                        captureCallback, null);
+                                        } catch (CameraAccessException e) {
+                                            showToast("Failed to start camera preview because it couldn't access camera");
+                                        } catch (IllegalStateException e) {
+                                            showToast( "Failed to start camera preview.");
+                                        }
+                                    }
+                                }, 500);
+
+                            } catch (final Exception ignored) {
                             }
                         }
 
                         @Override
-                        public void onConfigureFailed(final CameraCaptureSession cameraCaptureSession) {
+                        public void onConfigureFailed(@NonNull final CameraCaptureSession cameraCaptureSession) {
                             showToast("Failed");
                         }
                     },
@@ -590,34 +604,4 @@ public class CameraConnectionFragment extends Fragment {
         }
     }
 
-    /**
-     * Shows an error message dialog.
-     */
-    public static class ErrorDialog extends DialogFragment {
-        private static final String ARG_MESSAGE = "message";
-
-        public static ErrorDialog newInstance(final String message) {
-            final ErrorDialog dialog = new ErrorDialog();
-            final Bundle args = new Bundle();
-            args.putString(ARG_MESSAGE, message);
-            dialog.setArguments(args);
-            return dialog;
-        }
-
-        @Override
-        public Dialog onCreateDialog(final Bundle savedInstanceState) {
-            final Activity activity = getActivity();
-            return new AlertDialog.Builder(activity)
-                    .setMessage(getArguments().getString(ARG_MESSAGE))
-                    .setPositiveButton(
-                            android.R.string.ok,
-                            new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(final DialogInterface dialogInterface, final int i) {
-                                    activity.finish();
-                                }
-                            })
-                    .create();
-        }
-    }
 }
