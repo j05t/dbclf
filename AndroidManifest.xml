@@ -32,7 +32,8 @@
         <activity
             android:name=".ClassifierActivity"
             android:label="@string/activity_name_classification"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

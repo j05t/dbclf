@@ -57,8 +57,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
 
     private static final boolean MAINTAIN_ASPECT = true;
 
-    private static final Size DESIRED_PREVIEW_SIZE = new Size(INPUT_SIZE, INPUT_SIZE);
-
     private Matrix frameToCropTransform;
 
     private Classifier classifier;
@@ -133,7 +131,7 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     public int getOrientation(Context context, Uri photoUri) {
         /* it's on the external media. */
         try (final Cursor cursor = context.getContentResolver().query(photoUri,
-                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null);
+                new String[]{MediaStore.Images.ImageColumns.ORIENTATION}, null, null, null)
         ) {
             if (cursor.getCount() != 1) {
                 cursor.close();
@@ -187,16 +185,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
         }
 
         return result;
-    }
-
-    @Override
-    protected int getLayoutId() {
-        return R.layout.camera_connection_fragment;
-    }
-
-    @Override
-    protected Size getDesiredPreviewFrameSize() {
-        return DESIRED_PREVIEW_SIZE;
     }
 
     @Override

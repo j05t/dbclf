@@ -66,7 +66,6 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.github.mikephil.charting.charts.PieChart;
@@ -125,6 +124,8 @@ public abstract class CameraActivity extends FragmentActivity
 
     protected ClassifierActivity.InferenceTask inferenceTask;
 
+    public static String cameraId;
+
     abstract void handleSendImage(Intent intent);
 
     @Override
@@ -136,6 +137,7 @@ public abstract class CameraActivity extends FragmentActivity
 
         setupButtons();
         setupPieChart();
+        initClassifier();
 
         // Get intent, action and MIME type
         final Intent intent = getIntent();
@@ -251,7 +253,6 @@ public abstract class CameraActivity extends FragmentActivity
             if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
                 return;
 
-            // todo: send indices here, main activity may get terminated
             Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
             i.putStringArrayListExtra("recogs", currentRecognitions);
 
@@ -340,8 +341,7 @@ public abstract class CameraActivity extends FragmentActivity
                 rgbBytes = new int[previewWidth * previewHeight];
                 onPreviewSizeChosen(new Size(previewSize.width, previewSize.height), 90);
             }
-        } catch (final Exception e) {
-            //LOGGER.e(e, "Exception!");
+        } catch (final Exception ignored) {
             return;
         }
 
@@ -412,11 +412,6 @@ public abstract class CameraActivity extends FragmentActivity
     }
 
     @Override
-    public synchronized void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public synchronized void onResume() {
         super.onResume();
 
@@ -430,7 +425,6 @@ public abstract class CameraActivity extends FragmentActivity
         } else {
             setFragment();
         }
-
 
         snapShot.set(false);
 
@@ -572,44 +566,24 @@ public abstract class CameraActivity extends FragmentActivity
                 useCamera2API = (facing == CameraCharacteristics.LENS_FACING_EXTERNAL)
                         || isHardwareLevelSupported(characteristics,
                         CameraCharacteristics.INFO_SUPPORTED_HARDWARE_LEVEL_FULL);
-                //LOGGER.i("Camera API lv2?: %s", useCamera2API);
                 return cameraId;
             }
-        } catch (CameraAccessException e) {
-            //LOGGER.e(e, "Not allowed to access camera");
+        } catch (CameraAccessException ignored) {
         }
 
         return null;
     }
 
     protected void setFragment() {
-        String cameraId = chooseCamera();
+        cameraId = chooseCamera();
         if (cameraId == null) {
             Toast.makeText(this, "No Camera Detected", Toast.LENGTH_SHORT).show();
             finish();
         }
 
-        Fragment fragment;
-        if (useCamera2API) {
-            CameraConnectionFragment camera2Fragment =
-                    CameraConnectionFragment.newInstance(
-                            (size, rotation) -> {
-                                previewHeight = size.getHeight();
-                                previewWidth = size.getWidth();
-                                CameraActivity.this.onPreviewSizeChosen(size, rotation);
-                            },
-                            this,
-                            getLayoutId(),
-                            getDesiredPreviewFrameSize());
-
-            camera2Fragment.setCamera(cameraId);
-            fragment = camera2Fragment;
-        } else {
-            fragment =
-                    new LegacyCameraConnectionFragment(this, getLayoutId(), getDesiredPreviewFrameSize());
-        }
-
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commitNowAllowingStateLoss();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, useCamera2API ? new CameraConnectionFragment() : new LegacyCameraConnectionFragment())
+                .commitAllowingStateLoss();
     }
 
     protected void fillBytes(final Plane[] planes, final byte[][] yuvBytes) {
@@ -649,10 +623,6 @@ public abstract class CameraActivity extends FragmentActivity
     protected abstract void processImage();
 
     protected abstract void onPreviewSizeChosen(final Size size, final int rotation);
-
-    protected abstract int getLayoutId();
-
-    protected abstract Size getDesiredPreviewFrameSize();
 
     protected abstract void initClassifier();
 

@@ -83,18 +83,6 @@ public class TensorFlowImageClassifier implements Classifier {
         c.outputName = outputName;
 
         // Read the label names into memory.
-/*        final String actualFilename = labelFilename.split("file:///android_asset/")[1];
-
-        try (BufferedReader br =
-                     new BufferedReader(new InputStreamReader(assetManager.open(actualFilename)))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                c.labels.add(line);
-            }
-        } catch (IOException e) {
-            throw new RuntimeException("Problem reading label file!", e);
-        }*/
-
         Collections.addAll(c.labels, labels);
 
         c.inferenceInterface = new TensorFlowInferenceInterface(assetManager, modelFilename);
@@ -102,7 +90,6 @@ public class TensorFlowImageClassifier implements Classifier {
         // The shape of the output is [N, NUM_CLASSES], where N is the batch size.
         final Operation operation = c.inferenceInterface.graphOperation(outputName);
         final int numClasses = (int) operation.output(0).shape().size(1);
-        //Log.i(TAG, "Read " + c.labels.size() + " labels, output layer size is " + numClasses);
 
         // Ideally, inputSize could have been retrieved from the shape of the input operation.  Alas,
         // the placeholder node for input in the graphdef typically used does not specify a shape, so it
@@ -123,7 +110,6 @@ public class TensorFlowImageClassifier implements Classifier {
 
     @Override
     public List<Recognition> recognizeImage(final Bitmap bitmap) {
-        // Log this method so that it can be analyzed with systrace.
 
         // Preprocess the image data from 0-255 int to normalized float based
         // on the provided parameters.

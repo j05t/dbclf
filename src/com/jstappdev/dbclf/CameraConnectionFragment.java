@@ -18,7 +18,6 @@ package com.jstappdev.dbclf;
  */
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -65,7 +64,6 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-@SuppressLint("ValidFragment")
 public class CameraConnectionFragment extends Fragment {
 
     /**
@@ -78,7 +76,6 @@ public class CameraConnectionFragment extends Fragment {
      * Conversion from screen rotation to JPEG orientation.
      */
     private static final SparseIntArray ORIENTATIONS = new SparseIntArray();
-    private static final String FRAGMENT_DIALOG = "dialog";
 
     static {
         ORIENTATIONS.append(Surface.ROTATION_0, 90);
@@ -219,7 +216,7 @@ public class CameraConnectionFragment extends Fragment {
     /**
      * A {@link OnImageAvailableListener} to receive frames as they are available.
      */
-    private final OnImageAvailableListener imageListener;
+    private OnImageAvailableListener imageListener;
 
     /**
      * The input size in pixels desired by TensorFlow (width and height of a square bitmap).
@@ -232,26 +229,26 @@ public class CameraConnectionFragment extends Fragment {
     private final int layout;
 
 
-    private final ConnectionCallback cameraConnectionCallback;
+    private ConnectionCallback cameraConnectionCallback;
 
-
-    private CameraConnectionFragment(
-            final ConnectionCallback connectionCallback,
-            final OnImageAvailableListener imageListener,
-            final int layout,
-            final Size inputSize) {
-        this.cameraConnectionCallback = connectionCallback;
-        this.imageListener = imageListener;
-        this.layout = layout;
-        this.inputSize = inputSize;
+    public CameraConnectionFragment() {
+        this.layout = R.layout.camera_connection_fragment;
+        this.inputSize = new Size(299, 299);
+        this.cameraId = CameraActivity.cameraId;
     }
 
-    public static CameraConnectionFragment newInstance(
-            final ConnectionCallback callback,
-            final OnImageAvailableListener imageListener,
-            final int layout,
-            final Size inputSize) {
-        return new CameraConnectionFragment(callback, imageListener, layout, inputSize);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        this.cameraConnectionCallback = new ConnectionCallback() {
+            @Override
+            public void onPreviewSizeChosen(Size size, int rotation) {
+                ((CameraActivity) requireContext()).onPreviewSizeChosen(size, rotation);
+            }
+        };
+
+        this.imageListener = (CameraActivity) requireContext();
     }
 
     /**
@@ -348,9 +345,6 @@ public class CameraConnectionFragment extends Fragment {
         super.onPause();
     }
 
-    public void setCamera(String cameraId) {
-        this.cameraId = cameraId;
-    }
 
     /**
      * Sets up member variables related to camera.
@@ -528,8 +522,14 @@ public class CameraConnectionFragment extends Fragment {
 
                                 // Finally, we start displaying the camera preview.
                                 previewRequest = previewRequestBuilder.build();
+                                /*
+                                 * @throws IllegalStateException if this session is no longer active, either because the session
+                                 *                               was explicitly closed, a new session has been created
+                                 *                               or the camera device has been closed.
+                                 */
                                 captureSession.setRepeatingRequest(
                                         previewRequest, captureCallback, backgroundHandler);
+
                             } catch (final CameraAccessException ignored) {
                             }
                         }
