@@ -14,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.2'
+        classpath 'com.android.tools.build:gradle:3.5.0'
         classpath 'org.apache.httpcomponents:httpclient:4.5.6'
     }
 }
@@ -22,8 +22,8 @@ buildscript {
 allprojects {
     repositories {
         google()
-        maven { url "https://jitpack.io" }
         jcenter()
+        maven { url "https://jitpack.io" }
     }
 }
 
@@ -34,15 +34,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '28.0.3'
+    buildToolsVersion '29.0.2'
 
     defaultConfig {
         applicationId = 'com.jstappdev.dbclf'
         minSdkVersion 21
         targetSdkVersion 29
 
-        versionCode 85
-        versionName "39"
+        versionCode 88
+        versionName "40"
     }
 
     if (buildFor == 'armabi-v7a') {
