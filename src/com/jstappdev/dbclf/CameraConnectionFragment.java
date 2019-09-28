@@ -525,9 +525,6 @@ public class CameraConnectionFragment extends Fragment {
                                  *                               was explicitly closed, a new session has been created
                                  *                               or the camera device has been closed.
                                  */
-                                //captureSession.setRepeatingRequest(
-                                //        previewRequest, captureCallback, backgroundHandler);
-
                                 // https://stackoverflow.com/questions/40146485/session-has-been-closed-further-changes-are-illegal
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
@@ -539,7 +536,7 @@ public class CameraConnectionFragment extends Fragment {
                                         } catch (CameraAccessException e) {
                                             showToast("Failed to start camera preview because it couldn't access camera");
                                         } catch (IllegalStateException e) {
-                                            showToast( "Failed to start camera preview.");
+                                            showToast("Failed to start camera preview.");
                                         }
                                     }
                                 }, 500);

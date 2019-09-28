@@ -240,7 +240,6 @@ public abstract class CameraActivity extends FragmentActivity
             if (!isChecked)
                 resultsView.setEnabled(false);
 
-            //if (imageSet)
             cameraButton.setEnabled(true);
 
             imageSet = false;
@@ -255,9 +254,8 @@ public abstract class CameraActivity extends FragmentActivity
             if (currentRecognitions == null || continuousInference || currentRecognitions.size() == 0)
                 return;
 
-            Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
+            final Intent i = new Intent(getApplicationContext(), SimpleListActivity.class);
             i.putStringArrayListExtra("recogs", currentRecognitions);
-
             startActivity(i);
         });
     }
@@ -447,17 +445,18 @@ public abstract class CameraActivity extends FragmentActivity
         mChart.setUsePercentValues(true);
         mChart.setTouchEnabled(false);
 
-        mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf"));
-
         // show center text only first time
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        boolean previouslyStarted = prefs.getBoolean("showhelp", false);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        final boolean previouslyStarted = prefs.getBoolean("showhelp", false);
         if(!previouslyStarted) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("showhelp", Boolean.TRUE);
             edit.apply();
+
+            mChart.setCenterTextTypeface(Typeface.createFromAsset(getAssets(), "OpenSans-Regular.ttf"));
             mChart.setCenterText(generateCenterSpannableText());
             mChart.setCenterTextSizePixels(23);
+            mChart.setDrawCenterText(true);
         }
 
         mChart.setExtraOffsets(14, 0.f, 14, 0.f);
@@ -465,7 +464,6 @@ public abstract class CameraActivity extends FragmentActivity
         mChart.setHoleColor(Color.TRANSPARENT);
         mChart.setHovered(true);
         mChart.setDrawMarkers(false);
-        mChart.setDrawCenterText(true);
         mChart.setRotationEnabled(false);
         mChart.setHighlightPerTapEnabled(false);
         mChart.getLegend().setEnabled(false);
