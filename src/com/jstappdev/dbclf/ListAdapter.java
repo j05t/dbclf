@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,7 +48,9 @@ public class ListAdapter extends BaseExpandableListAdapter implements SectionInd
         // create a list from the set to sort
         final ArrayList<String> sectionList = new ArrayList<String>(mapIndex.keySet());
 
-        Collections.sort(sectionList);
+        final Collator coll = Collator.getInstance(Locale.getDefault());
+        coll.setStrength(Collator.PRIMARY);
+        Collections.sort(sectionList, coll);
 
         sections = new String[sectionList.size()];
 
