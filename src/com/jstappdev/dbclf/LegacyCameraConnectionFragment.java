@@ -39,27 +39,6 @@ import java.io.IOException;
 import java.util.List;
 
 public class LegacyCameraConnectionFragment extends Fragment {
-    private Camera camera;
-    private Camera.PreviewCallback imageListener;
-    private Size desiredSize;
-
-    /**
-     * The layout identifier to inflate for this Fragment.
-     */
-    private int layout;
-
-
-    public LegacyCameraConnectionFragment() {
-        this.layout = R.layout.camera_connection_fragment;
-        this.desiredSize = new Size(299, 299);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.imageListener = (CameraActivity) requireContext();
-    }
-
     /**
      * Conversion from screen rotation to JPEG orientation.
      */
@@ -72,6 +51,17 @@ public class LegacyCameraConnectionFragment extends Fragment {
         ORIENTATIONS.append(Surface.ROTATION_270, 180);
     }
 
+    private Camera camera;
+    private Camera.PreviewCallback imageListener;
+    private Size desiredSize;
+    /**
+     * The layout identifier to inflate for this Fragment.
+     */
+    private int layout;
+    /**
+     * An {@link AutoFitTextureView} for camera preview.
+     */
+    private AutoFitTextureView textureView;
     /**
      * {@link android.view.TextureView.SurfaceTextureListener} handles several lifecycle events on a
      * {@link TextureView}.
@@ -132,16 +122,21 @@ public class LegacyCameraConnectionFragment extends Fragment {
                 public void onSurfaceTextureUpdated(final SurfaceTexture texture) {
                 }
             };
-
-    /**
-     * An {@link AutoFitTextureView} for camera preview.
-     */
-    private AutoFitTextureView textureView;
-
     /**
      * An additional thread for running tasks that shouldn't block the UI.
      */
     private HandlerThread backgroundThread;
+
+    public LegacyCameraConnectionFragment() {
+        this.layout = R.layout.camera_connection_fragment;
+        this.desiredSize = new Size(299, 299);
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.imageListener = (CameraActivity) requireContext();
+    }
 
     @Override
     public View onCreateView(

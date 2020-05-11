@@ -14,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.6.3'
         classpath 'org.apache.httpcomponents:httpclient:4.5.6'
     }
 }
@@ -41,8 +41,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
 
-        versionCode 92
-        versionName "41"
+        versionCode 93
+        versionName "42"
     }
 
     if (buildFor == 'armabi-v7a') {
@@ -51,8 +51,7 @@ android {
                 abiFilters 'armeabi-v7a'
             }
         }
-    }
-    if (buildFor == 'arm64-v8a') {
+    } else if (buildFor == 'arm64-v8a') {
         defaultConfig {
             ndk {
                 abiFilters 'arm64-v8a'
@@ -89,4 +88,5 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-android:1.8.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

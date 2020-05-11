@@ -41,9 +41,6 @@ import java.util.List;
 
 
 public class ClassifierActivity extends CameraActivity implements OnImageAvailableListener {
-    private Bitmap rgbFrameBitmap = null;
-    private Bitmap croppedBitmap = null;
-
     // mobilenet: 224, inception_v3: 299
     private static final int INPUT_SIZE = 299;
     private static final int IMAGE_MEAN = 128;
@@ -52,11 +49,10 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
     private static final String INPUT_NAME = "Mul";
     // output, inception(tf): final_result, Keras: output/Softmax
     private static final String OUTPUT_NAME = "final_result";
-
     private static final String MODEL_FILE = "file:///android_asset/stripped.pb";
-
     private static final boolean MAINTAIN_ASPECT = true;
-
+    private Bitmap rgbFrameBitmap = null;
+    private Bitmap croppedBitmap = null;
     private Matrix frameToCropTransform;
 
     private Classifier classifier;
@@ -95,35 +91,6 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
             });
         } catch (IOException e) {
             Toast.makeText(getApplicationContext(), "Unable to load image", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    protected class InferenceTask extends AsyncTask<Bitmap, Void, List<Classifier.Recognition>> {
-        @Override
-        protected void onPreExecute() {
-            if (!continuousInference)
-                progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected List<Classifier.Recognition> doInBackground(Bitmap... bitmaps) {
-            initClassifier();
-
-            if (!isCancelled() && classifier != null) {
-                return classifier.recognizeImage(bitmaps[0]);
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<Classifier.Recognition> recognitions) {
-            progressBar.setVisibility(View.GONE);
-
-            if (!isCancelled())
-                updateResults(recognitions);
-
-            readyForNextImage();
         }
     }
 
@@ -249,6 +216,35 @@ public class ClassifierActivity extends CameraActivity implements OnImageAvailab
                 inferenceTask = new InferenceTask();
                 inferenceTask.execute(finalCroppedBitmap);
             });
+        }
+    }
+
+    protected class InferenceTask extends AsyncTask<Bitmap, Void, List<Classifier.Recognition>> {
+        @Override
+        protected void onPreExecute() {
+            if (!continuousInference)
+                progressBar.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected List<Classifier.Recognition> doInBackground(Bitmap... bitmaps) {
+            initClassifier();
+
+            if (!isCancelled() && classifier != null) {
+                return classifier.recognizeImage(bitmaps[0]);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(List<Classifier.Recognition> recognitions) {
+            progressBar.setVisibility(View.GONE);
+
+            if (!isCancelled())
+                updateResults(recognitions);
+
+            readyForNextImage();
         }
     }
 

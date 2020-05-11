@@ -10,25 +10,66 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageView;
+import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 
-public class ListAdapter extends BaseExpandableListAdapter {
+public class ListAdapter extends BaseExpandableListAdapter implements SectionIndexer {
 
     private Context context;
     private List<String> listDataHeader; // header titles
     // child data in format of header title, child title
     private HashMap<String, String> listDataChild;
+    // index for side index list
+    private HashMap<String, Integer> mapIndex;
+    private String[] sections;
 
     ListAdapter(Context context, List<String> listDataHeader,
                 HashMap<String, String> listChildData) {
         this.context = context;
         this.listDataHeader = listDataHeader;
         this.listDataChild = listChildData;
+
+        // HashMap will prevent duplicates
+        mapIndex = new LinkedHashMap<String, Integer>();
+        for (int i = listDataHeader.size() - 1; i >= 0; i--) {
+            mapIndex.put(listDataHeader.get(i).substring(0, 1).toUpperCase(Locale.getDefault()), i);
+        }
+
+        // create a list from the set to sort
+        final ArrayList<String> sectionList = new ArrayList<String>(mapIndex.keySet());
+
+        Collections.sort(sectionList);
+
+        sections = new String[sectionList.size()];
+
+        sectionList.toArray(sections);
+    }
+
+    private static Bitmap getBitmapFromAsset(Context context, String filePath) {
+        final AssetManager assetManager = context.getAssets();
+
+        InputStream istr;
+        Bitmap bitmap = null;
+        try {
+            istr = assetManager.open(filePath);
+            bitmap = BitmapFactory.decodeStream(istr);
+        } catch (IOException e) {
+            try {
+                istr = assetManager.open("nodata.jpg");
+                bitmap = BitmapFactory.decodeStream(istr);
+            } catch (IOException ignored) {
+            }
+        }
+        return bitmap;
     }
 
     @Override
@@ -53,7 +94,7 @@ public class ListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.list_item, parent, false);
         }
 
-        ImageView imageViewListChild = convertView.findViewById(R.id.breed_image);
+        final ImageView imageViewListChild = convertView.findViewById(R.id.breed_image);
 
         imageViewListChild.setImageBitmap(getBitmapFromAsset(context, childText));
         return convertView;
@@ -84,14 +125,15 @@ public class ListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded,
                              View convertView, ViewGroup parent) {
-        String headerTitle = (String) getGroup(groupPosition);
+
+        final String headerTitle = (String) getGroup(groupPosition);
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.list_group, parent, false);
         }
 
-        TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
+        final TextView lblListHeader = convertView.findViewById(R.id.lblListHeader);
         lblListHeader.setTypeface(null, Typeface.BOLD);
         lblListHeader.setText(headerTitle);
 
@@ -108,22 +150,16 @@ public class ListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    private static Bitmap getBitmapFromAsset(Context context, String filePath) {
-        AssetManager assetManager = context.getAssets();
-
-        InputStream istr;
-        Bitmap bitmap = null;
-        try {
-            istr = assetManager.open(filePath);
-            bitmap = BitmapFactory.decodeStream(istr);
-        } catch (IOException e) {
-            try {
-                istr = assetManager.open("nodata.jpg");
-                bitmap = BitmapFactory.decodeStream(istr);
-            } catch (IOException ignored) {
-            }
-        }
-        return bitmap;
+    public int getPositionForSection(int section) {
+        //noinspection ConstantConditions
+        return mapIndex.get(sections[section]);
     }
 
+    public int getSectionForPosition(int position) {
+        return 0;
+    }
+
+    public Object[] getSections() {
+        return sections;
+    }
 }

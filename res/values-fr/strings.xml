@@ -3,8 +3,6 @@
     <string name="app_name">Identify Dog Breeds</string>
     <string name="activity_name_classification">Identifiez les races de chiens</string>
     <string name="camera_error">Cet appareil ne prend pas en charge l\'API Camera2.</string>
-    <string name="continuous_on">On</string>
-    <string name="continuous_off">Off</string>
     <string name="from_gallery">Depuis la Galerie..</string>
     <string name="about_message"><![CDATA[
     <h1>Identify Dog Breeds</h1>
@@ -19,10 +17,8 @@
     <string name="about_menu">A propos</string>
     <string name="exit_menu">Quitter</string>
     <string name="error_tf_init">Erreur de mémoire insuffisante. Essayez de fermer quelques applications en arrière-plan.</string>
-    <string name="running_prediction">Analyse de l\'image..</string>
     <string name="share_with">Partager avec..</string>
     <string name="list_breeds">Races identifiables</string>
-    <string name="list_empty">Il n\'y a pas de données</string>
     <string name="searchFor">Regarder sur Wikipedia ?</string>
     <string name="no">Non</string>
     <string name="yes">Oui</string>

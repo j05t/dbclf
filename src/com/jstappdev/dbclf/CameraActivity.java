@@ -92,41 +92,34 @@ public abstract class CameraActivity extends FragmentActivity
     private static final String PERMISSION_CAMERA = Manifest.permission.CAMERA;
     private static final String PERMISSION_STORAGE_READ = Manifest.permission.READ_EXTERNAL_STORAGE;
     private static final String PERMISSION_STORAGE_WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
+            Color.rgb(225, 151, 76), Color.rgb(132, 186, 91), Color.TRANSPARENT};
+    public static String cameraId;
     private static int cameraPermissionRequests = 0;
-
+    protected ArrayList<String> currentRecognitions;
+    protected int previewWidth = 0;
+    protected int previewHeight = 0;
+    protected ClassifierActivity.InferenceTask inferenceTask;
+    TextView resultsView;
+    PieChart mChart;
+    AtomicBoolean snapShot = new AtomicBoolean(false);
+    boolean continuousInference = false;
+    boolean imageSet = false;
+    ImageButton cameraButton, shareButton;
+    ToggleButton continuousInferenceButton;
+    ImageView imageViewFromGallery;
+    ProgressBar progressBar;
     private Handler handler;
     private HandlerThread handlerThread;
     private boolean isProcessingFrame = false;
     private byte[][] yuvBytes = new byte[3][];
     private int[] rgbBytes = null;
     private int yRowStride;
-    protected ArrayList<String> currentRecognitions;
-
-    protected int previewWidth = 0;
-    protected int previewHeight = 0;
-
     private Runnable postInferenceCallback;
     private Runnable imageConverter;
-
-    TextView resultsView;
-    PieChart mChart;
-
-    AtomicBoolean snapShot = new AtomicBoolean(false);
-    boolean continuousInference = false;
-    boolean imageSet = false;
-
-    ImageButton cameraButton, shareButton;
-    ToggleButton continuousInferenceButton;
-    ImageView imageViewFromGallery;
-    ProgressBar progressBar;
-
-    static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
-            Color.rgb(225, 151, 76), Color.rgb(132, 186, 91), Color.TRANSPARENT};
     private boolean useCamera2API;
-
-    protected ClassifierActivity.InferenceTask inferenceTask;
-
-    public static String cameraId;
+    private String fileUrl;
+    private boolean alreadyAdded = false;
 
     abstract void handleSendImage(Intent intent);
 
@@ -448,7 +441,7 @@ public abstract class CameraActivity extends FragmentActivity
         // show center text only first time
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         final boolean previouslyStarted = prefs.getBoolean("showhelp", false);
-        if(!previouslyStarted) {
+        if (!previouslyStarted) {
             SharedPreferences.Editor edit = prefs.edit();
             edit.putBoolean("showhelp", Boolean.TRUE);
             edit.apply();
@@ -776,9 +769,6 @@ public abstract class CameraActivity extends FragmentActivity
         rootView.setDrawingCacheEnabled(true);
         return rootView.getDrawingCache();
     }
-
-    private String fileUrl;
-    private boolean alreadyAdded = false;
 
     protected void setupShareButton() {
         alreadyAdded = false;

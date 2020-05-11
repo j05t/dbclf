@@ -3,8 +3,6 @@
     <string name="app_name">Erkenne Hunderassen</string>
     <string name="activity_name_classification">Erkenne Hunderassen</string>
     <string name="camera_error">Dieses Gerät unterstützt die Camera2 API nicht.</string>
-    <string name="continuous_on">Ein</string>
-    <string name="continuous_off">Aus</string>
     <string name="from_gallery">Lade Foto..</string>
     <string name="about_message"><![CDATA[
     <h1>Erkenne Hunderassen</h1>
@@ -19,10 +17,8 @@
     <string name="about_menu">Über diese App</string>
     <string name="exit_menu">Beenden</string>
     <string name="error_tf_init">Zu wenig freier Speicher. Versuchen Sie, einige Hintergrundanwendungen zu schließen.</string>
-    <string name="running_prediction">Analysiere Bild..</string>
     <string name="share_with">Teile mit..</string>
     <string name="list_breeds">Unterstützte Rassen</string>
-    <string name="list_empty">Keine Daten</string>
     <string name="searchFor">Suche auf Wikipedia?</string>
     <string name="no">Nein</string>
     <string name="yes">Ja</string>
