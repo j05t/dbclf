@@ -6,4 +6,6 @@ Stanford Dogs Dataset</a>. Based on the <a href="https://github.com/tensorflow/t
  
 <img src="https://github.com/j05t/dbclf/blob/master/screenshot1.jpg" alt="Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot2.jpg" alt="Another Screenshot" width="30%" height="30%" /> <img src="https://github.com/j05t/dbclf/blob/master/screenshot3.jpg" alt="Another Screenshot" width="30%" height="30%" />
 
+## Downloads
 <a href="https://f-droid.org/en/packages/com.jstappdev.dbclf/"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt='Get it on F-Droid' />
+<a href="https://taimienphi.vn" title="download"><img src="https://taimienphi.vn/Images/bn/reviewed/tmp2.png" title="awarded 5 Stars at Taimienphi" alt="download" /></a>
