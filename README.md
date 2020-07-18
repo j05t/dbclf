@@ -8,4 +8,4 @@ Stanford Dogs Dataset</a>. Based on the <a href="https://github.com/tensorflow/t
 
 ## Downloads
 <a href="https://f-droid.org/en/packages/com.jstappdev.dbclf/"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt='Get it on F-Droid' />
-<a href="https://taimienphi.vn" title="download"><img src="https://taimienphi.vn/Images/bn/reviewed/tmp2.png" title="awarded 5 Stars at Taimienphi" alt="download" /></a>
+<a href="https://taimienphi.vn/download-identify-dog-breeds-89483" title="download"><img src="https://taimienphi.vn/Images/bn/reviewed/tmp2.png" title="awarded 5 Stars at Taimienphi" alt="download" /></a>
