@@ -1,7 +1,7 @@
 // set to 'armabi-v7a', 'all', 'arm64-v8a'
 // armabi-v7a will only build for armabi-v7a (most smartphones)
 // all will build for arm64-v8a, armabi-v7a, x86, x86_64
-def buildFor = 'armabi-v7a'
+def buildFor = 'arm64-v8a'
 
 
 project.buildDir = 'gradleBuild'
@@ -14,7 +14,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.6.3'
+        classpath 'com.android.tools.build:gradle:4.0.1'
         classpath 'org.apache.httpcomponents:httpclient:4.5.6'
     }
 }
@@ -34,15 +34,15 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    buildToolsVersion '29.0.3'
 
     defaultConfig {
         applicationId = 'com.jstappdev.dbclf'
         minSdkVersion 21
         targetSdkVersion 29
 
-        versionCode 96
-        versionName "42"
+        versionCode 98
+        versionName "43"
     }
 
     if (buildFor == 'armabi-v7a') {
@@ -88,5 +88,5 @@ dependencies {
     implementation 'org.tensorflow:tensorflow-android:1.8.0'
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.1'
 }
