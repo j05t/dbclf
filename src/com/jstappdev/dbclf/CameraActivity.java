@@ -21,9 +21,11 @@ import android.Manifest;
 import android.app.ActionBar;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
@@ -51,7 +53,9 @@ import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StyleSpan;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.util.Size;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -60,9 +64,11 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -79,6 +85,7 @@ import com.jstappdev.dbclf.env.ImageUtils;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -94,6 +101,10 @@ public abstract class CameraActivity extends FragmentActivity
     private static final String PERMISSION_STORAGE_WRITE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
     static private final int[] CHART_COLORS = {Color.rgb(114, 147, 203),
             Color.rgb(225, 151, 76), Color.rgb(132, 186, 91), Color.TRANSPARENT};
+
+    public static List<String> supportedLanguageNames;
+    public static List<String> supportedLanguageCodes;
+
     public static String cameraId;
     private static int cameraPermissionRequests = 0;
     protected ArrayList<String> currentRecognitions;
@@ -120,6 +131,7 @@ public abstract class CameraActivity extends FragmentActivity
     private boolean useCamera2API;
     private String fileUrl;
     private boolean alreadyAdded = false;
+    private String preferred_language_code;
 
     abstract void handleSendImage(Intent intent);
 
@@ -127,6 +139,12 @@ public abstract class CameraActivity extends FragmentActivity
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+
+        preferred_language_code = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("language", "en");
+        supportedLanguageNames = Arrays.asList(getResources().getStringArray(R.array.array_languages));
+        supportedLanguageCodes = Arrays.asList(getResources().getStringArray(R.array.array_language_codes));
+
+        setLocale();
 
         setContentView(R.layout.activity_camera);
 
@@ -260,27 +278,44 @@ public abstract class CameraActivity extends FragmentActivity
         return true;
     }
 
+    public void setLocale() {
+        Locale locale;
+
+        Log.d("dbclf", "setting locale to " + preferred_language_code);
+
+        if (supportedLanguageCodes.contains(preferred_language_code)) {
+            locale = new Locale(preferred_language_code);
+        } else {
+            locale = Locale.getDefault();
+        }
+
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());    //restart Activity
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_about:
-                final AlertDialog.Builder builder1 = new AlertDialog.Builder(CameraActivity.this);
 
                 final SpannableString s = new SpannableString(Html.fromHtml(getString(R.string.about_message)));
                 Linkify.addLinks(s, Linkify.WEB_URLS);
 
-                builder1.setMessage(s);
-                builder1.setCancelable(true);
+                final AlertDialog dialog = new AlertDialog.Builder(CameraActivity.this)
+                        .setMessage(s)
+                        .setCancelable(true)
+                        .setPositiveButton(
+                                "Ok.",
+                                (d, id) -> d.cancel())
+                        .create();
 
-                builder1.setPositiveButton(
-                        "Ok.",
-                        (dialog, id) -> dialog.cancel());
+                dialog.show();
 
-                final AlertDialog infoDialog = builder1.create();
-                infoDialog.show();
-
-                ((TextView) infoDialog.findViewById(android.R.id.message)).
+                ((TextView) dialog.findViewById(android.R.id.message)).
                         setMovementMethod(LinkMovementMethod.getInstance());
+
                 break;
             case R.id.pick_image:
                 if (!hasPermission(PERMISSION_STORAGE_READ)) {
@@ -289,6 +324,35 @@ public abstract class CameraActivity extends FragmentActivity
                 }
 
                 pickImage();
+                break;
+            case R.id.set_language:
+                final LayoutInflater inflater = getLayoutInflater();
+                final View dialogView = inflater.inflate(R.layout.lang_dialog, null);
+
+                final Spinner langSpinner = dialogView.findViewById(R.id.spinner1);
+                final ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(this,
+                        android.R.layout.simple_spinner_item, supportedLanguageNames);
+
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                langSpinner.setAdapter(dataAdapter);
+                langSpinner.setSelection(supportedLanguageCodes.indexOf(preferred_language_code));
+
+                new AlertDialog.Builder(CameraActivity.this)
+                        .setTitle(R.string.change_language)
+                        .setCancelable(true)
+                        .setView(dialogView)
+                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+                                preferred_language_code = supportedLanguageCodes.get(langSpinner.getSelectedItemPosition());
+                                PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("language", preferred_language_code).apply();
+                                finish();
+                                startActivity(getIntent());
+                            }
+                        })
+                        .setIcon(R.drawable.ic_change_language)
+                        .show();
+
                 break;
             case R.id.list_breeds:
                 startActivity(new Intent(this, SimpleListActivity.class));

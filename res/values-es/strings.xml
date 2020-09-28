@@ -147,5 +147,6 @@
         <item>Whippet</item>
         <item>Yorkshire Terrier</item>
     </string-array>
+    <string name="change_language">cambiar idioma</string>
 
 </resources>

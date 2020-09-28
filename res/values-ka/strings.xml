@@ -147,5 +147,6 @@
         <item>უიპეტი</item>
         <item>იორკშირ-ტერიერი</item>
     </string-array>
+    <string name="change_language">ენის შეცვლა</string>
 
 </resources>

@@ -11,7 +11,6 @@ import android.widget.ExpandableListView;
 
 import java.text.Collator;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +19,6 @@ import java.util.Locale;
 public class SimpleListActivity extends Activity {
 
     private static String wikiLangSubDomain = "";
-    private final List<String> translations = Arrays.asList("en", "de", "fr");
     private ExpandableListView expListView;
     private List<String> listDataHeader;
     private HashMap<String, String> listDataChild;
@@ -32,7 +30,7 @@ public class SimpleListActivity extends Activity {
         setContentView(R.layout.activity_list);
 
         final String lang = Locale.getDefault().getLanguage();
-        if (translations.contains(lang)) {
+        if (CameraActivity.supportedLanguageNames.contains(lang)) {
             wikiLangSubDomain = lang + ".";
         }
 

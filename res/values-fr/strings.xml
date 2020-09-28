@@ -147,5 +147,6 @@
         <item>Lévrier whippet</item>
         <item>Yorkshire Terrier</item>
     </string-array>
+    <string name="change_language">Langue</string>
 
 </resources>

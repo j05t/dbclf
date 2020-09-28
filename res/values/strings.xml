@@ -23,6 +23,7 @@
     <string name="no">No</string>
     <string name="yes">Yes</string>
     <string name="no_detection">No detection</string>
+    <string name="change_language">Change Language</string>
 
     <string-array name="breeds_array">
         <item>Affenpinscher</item>
@@ -146,6 +147,22 @@
         <item>West Highland White Terrier</item>
         <item>Whippet</item>
         <item>Yorkshire Terrier</item>
+    </string-array>
+
+    <string-array name="array_languages" translatable="false">
+        <item>English</item>
+        <item>Deutsch</item>
+        <item>Español</item>
+        <item>Français </item>
+        <item>ქართული</item>
+    </string-array>
+
+    <string-array name="array_language_codes" translateable="false">
+        <item>en</item>
+        <item>de</item>
+        <item>es</item>
+        <item>fr </item>
+        <item>ka</item>
     </string-array>
 
 </resources>

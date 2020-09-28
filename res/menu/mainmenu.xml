@@ -1,12 +1,17 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/pick_image"
         android:icon="@android:drawable/ic_menu_gallery"
         android:title="@string/from_gallery"
-        android:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/list_breeds"
         android:title="@string/list_breeds" />
+    <item
+        android:id="@+id/set_language"
+        android:icon="@drawable/ic_change_language"
+        android:title="Language" />
     <item
         android:id="@+id/action_about"
         android:title="@string/about_menu" />
