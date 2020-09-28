@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ExpandableListAdapter;
 import android.widget.ExpandableListView;
 
@@ -27,10 +28,11 @@ public class SimpleListActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_list);
 
-        final String lang = Locale.getDefault().getLanguage();
-        if (CameraActivity.supportedLanguageNames.contains(lang)) {
+        final String lang = CameraActivity.preferredLanguageCode;
+        if (CameraActivity.supportedLanguageCodes.contains(lang)) {
             wikiLangSubDomain = lang + ".";
         }
 

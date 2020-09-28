@@ -116,7 +116,7 @@ public abstract class CameraActivity extends FragmentActivity
     AtomicBoolean snapShot = new AtomicBoolean(false);
     boolean continuousInference = false;
     boolean imageSet = false;
-    ImageButton cameraButton, shareButton;
+    ImageButton cameraButton, shareButton, closeButton, saveButton;
     ToggleButton continuousInferenceButton;
     ImageView imageViewFromGallery;
     ProgressBar progressBar;
@@ -131,7 +131,9 @@ public abstract class CameraActivity extends FragmentActivity
     private boolean useCamera2API;
     private String fileUrl;
     private boolean alreadyAdded = false;
-    private String preferred_language_code;
+
+
+    public static String preferredLanguageCode;
 
     abstract void handleSendImage(Intent intent);
 
@@ -140,7 +142,7 @@ public abstract class CameraActivity extends FragmentActivity
         super.onCreate(null);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
-        preferred_language_code = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("language", "en");
+        preferredLanguageCode = PreferenceManager.getDefaultSharedPreferences(getBaseContext()).getString("lang", "en");
         supportedLanguageNames = Arrays.asList(getResources().getStringArray(R.array.array_languages));
         supportedLanguageCodes = Arrays.asList(getResources().getStringArray(R.array.array_language_codes));
 
@@ -195,9 +197,12 @@ public abstract class CameraActivity extends FragmentActivity
         continuousInferenceButton = findViewById(R.id.continuousInferenceButton);
         cameraButton = findViewById(R.id.cameraButton);
         shareButton = findViewById(R.id.shareButton);
+        closeButton = findViewById(R.id.closeButton);
+        saveButton = findViewById(R.id.saveButton);
+
         cameraButton.setEnabled(false);
-        shareButton.setEnabled(false);
-        shareButton.setVisibility(View.GONE);
+
+        setButtonsVisibility(View.GONE);
 
         cameraButton.setOnClickListener(v -> {
             if (!hasPermission(PERMISSION_CAMERA)) {
@@ -281,10 +286,8 @@ public abstract class CameraActivity extends FragmentActivity
     public void setLocale() {
         Locale locale;
 
-        Log.d("dbclf", "setting locale to " + preferred_language_code);
-
-        if (supportedLanguageCodes.contains(preferred_language_code)) {
-            locale = new Locale(preferred_language_code);
+        if (supportedLanguageCodes.contains(preferredLanguageCode)) {
+            locale = new Locale(preferredLanguageCode);
         } else {
             locale = Locale.getDefault();
         }
@@ -307,7 +310,7 @@ public abstract class CameraActivity extends FragmentActivity
                         .setMessage(s)
                         .setCancelable(true)
                         .setPositiveButton(
-                                "Ok.",
+                                android.R.string.ok,
                                 (d, id) -> d.cancel())
                         .create();
 
@@ -335,17 +338,17 @@ public abstract class CameraActivity extends FragmentActivity
 
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 langSpinner.setAdapter(dataAdapter);
-                langSpinner.setSelection(supportedLanguageCodes.indexOf(preferred_language_code));
+                langSpinner.setSelection(supportedLanguageCodes.indexOf(preferredLanguageCode));
 
                 new AlertDialog.Builder(CameraActivity.this)
                         .setTitle(R.string.change_language)
                         .setCancelable(true)
                         .setView(dialogView)
-                        .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                        .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
-                                preferred_language_code = supportedLanguageCodes.get(langSpinner.getSelectedItemPosition());
-                                PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("language", preferred_language_code).apply();
+                                preferredLanguageCode = supportedLanguageCodes.get(langSpinner.getSelectedItemPosition());
+                                PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("lang", preferredLanguageCode).apply();
                                 finish();
                                 startActivity(getIntent());
                             }
@@ -700,6 +703,17 @@ public abstract class CameraActivity extends FragmentActivity
         });
     }
 
+    void setButtonsVisibility(final int visibility) {
+        final boolean enabled = visibility == View.VISIBLE;
+
+        shareButton.setVisibility(visibility);
+        shareButton.setEnabled(enabled);
+        closeButton.setVisibility(visibility);
+        closeButton.setEnabled(enabled);
+        saveButton.setVisibility(visibility);
+        saveButton.setEnabled(enabled);
+    }
+
     // update results on our custom textview
     void updateResultsView(List<Classifier.Recognition> results) {
         final StringBuilder sb = new StringBuilder();
@@ -709,8 +723,7 @@ public abstract class CameraActivity extends FragmentActivity
             resultsView.setEnabled(true);
 
             if (!continuousInference) {
-                shareButton.setVisibility(View.VISIBLE);
-                shareButton.setEnabled(true);
+                setButtonsVisibility(View.VISIBLE);
             }
 
             if (results.size() > 0) {
@@ -781,6 +794,7 @@ public abstract class CameraActivity extends FragmentActivity
     protected void setImage(Bitmap image) {
         final int transitionTime = 1000;
         imageSet = true;
+        alreadyAdded = false;
 
         cameraButton.setEnabled(false);
         imageViewFromGallery.setImageBitmap(image);
@@ -805,7 +819,7 @@ public abstract class CameraActivity extends FragmentActivity
                 runInBackground(() -> updateResults(null));
                 transition.reverseTransition(transitionTime);
                 imageViewFromGallery.setVisibility(View.GONE);
-                shareButton.setVisibility(View.GONE);
+                setButtonsVisibility(View.GONE);
             }
 
             @Override
@@ -824,31 +838,46 @@ public abstract class CameraActivity extends FragmentActivity
         });
 
         imageViewFromGallery.setVisibility(View.VISIBLE);
-        imageViewFromGallery.setOnClickListener(v -> imageViewFromGallery.startAnimation(fade));
+        closeButton.setOnClickListener(v -> imageViewFromGallery.startAnimation(fade));
+
+        saveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                saveImage();
+            }
+        });
 
     }
 
     public Bitmap takeScreenshot() {
+        setButtonsVisibility(View.GONE);
         final View rootView = findViewById(android.R.id.content).getRootView();
         rootView.setDrawingCacheEnabled(true);
-        return rootView.getDrawingCache();
+        final Bitmap b = rootView.getDrawingCache();
+        setButtonsVisibility(View.VISIBLE);
+        return b;
+    }
+
+    private void saveImage() {
+        if (!hasPermission(PERMISSION_STORAGE_WRITE)) {
+            requestPermission(PERMISSION_STORAGE_WRITE);
+            return;
+        }
+
+        if (!alreadyAdded) {
+            final String fileName = getString(R.string.app_name) + " " + System.currentTimeMillis() / 1000;
+            fileUrl = MediaStore.Images.Media.insertImage(getContentResolver(), takeScreenshot(), fileName, currentRecognitions.toString());
+            alreadyAdded = true;
+        }
+
+        saveButton.setVisibility(View.GONE);
+        saveButton.setEnabled(false);
     }
 
     protected void setupShareButton() {
-        alreadyAdded = false;
 
         shareButton.setOnClickListener(v -> {
-
-            if (!hasPermission(PERMISSION_STORAGE_WRITE)) {
-                requestPermission(PERMISSION_STORAGE_WRITE);
-                return;
-            }
-
-            if (!alreadyAdded) {
-                final String fileName = getString(R.string.app_name) + " " + System.currentTimeMillis() / 1000;
-                fileUrl = MediaStore.Images.Media.insertImage(getContentResolver(), takeScreenshot(), fileName, currentRecognitions.toString());
-                alreadyAdded = true;
-            }
+            saveImage();
 
             final Uri contentUri = Uri.parse(fileUrl);
 
