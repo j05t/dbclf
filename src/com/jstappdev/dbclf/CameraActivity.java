@@ -182,7 +182,8 @@ public abstract class CameraActivity extends FragmentActivity
                     pickImage();
                     break;
                 case PERMISSION_STORAGE_WRITE:
-                    shareButton.callOnClick();
+                    // user might have clicked on save or share button
+                    //shareButton.callOnClick();
                     break;
             }
         }
@@ -864,11 +865,15 @@ public abstract class CameraActivity extends FragmentActivity
             return;
         }
 
+        Log.d("dbclf", "saving image, alreadyadded: " + alreadyAdded);
+
         if (!alreadyAdded) {
             final String fileName = getString(R.string.app_name) + " " + System.currentTimeMillis() / 1000;
             fileUrl = MediaStore.Images.Media.insertImage(getContentResolver(), takeScreenshot(), fileName, currentRecognitions.toString());
             alreadyAdded = true;
         }
+
+        Log.d("dbclf", "saved image, url: " + fileUrl);
 
         saveButton.setVisibility(View.GONE);
         saveButton.setEnabled(false);
@@ -877,6 +882,11 @@ public abstract class CameraActivity extends FragmentActivity
     protected void setupShareButton() {
 
         shareButton.setOnClickListener(v -> {
+            if (!hasPermission(PERMISSION_STORAGE_WRITE)) {
+                requestPermission(PERMISSION_STORAGE_WRITE);
+                return;
+            }
+
             saveImage();
 
             final Uri contentUri = Uri.parse(fileUrl);

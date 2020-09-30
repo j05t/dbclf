@@ -23,6 +23,7 @@
     <string name="no">Non</string>
     <string name="yes">Oui</string>
     <string name="no_detection">Pas de détection</string>
+    <string name="change_language">Langue</string>
 
     <string-array name="breeds_array">
         <item>Affenpinscher</item>
@@ -147,6 +148,5 @@
         <item>Lévrier whippet</item>
         <item>Yorkshire Terrier</item>
     </string-array>
-    <string name="change_language">Langue</string>
 
 </resources>

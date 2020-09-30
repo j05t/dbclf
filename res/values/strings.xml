@@ -152,7 +152,6 @@
     <string-array name="array_languages" translatable="false">
         <item>English</item>
         <item>Deutsch</item>
-        <item>Español</item>
         <item>Français </item>
         <item>ქართული</item>
     </string-array>
@@ -160,7 +159,6 @@
     <string-array name="array_language_codes" translateable="false">
         <item>en</item>
         <item>de</item>
-        <item>es</item>
         <item>fr </item>
         <item>ka</item>
     </string-array>

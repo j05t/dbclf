@@ -104,7 +104,15 @@ public class SimpleListActivity extends Activity {
             listDataHeader.addAll(recogs);
             expListView.setFastScrollAlwaysVisible(false);
         } else {
-            final Collator coll = Collator.getInstance(Locale.getDefault());
+            Locale locale;
+
+            if (CameraActivity.supportedLanguageCodes.contains(CameraActivity.preferredLanguageCode)) {
+                locale = new Locale(CameraActivity.preferredLanguageCode);
+            } else {
+                locale = Locale.getDefault();
+            }
+
+            final Collator coll = Collator.getInstance(locale);
             coll.setStrength(Collator.PRIMARY);
             Collections.sort(listDataHeader, coll);
             expListView.setFastScrollAlwaysVisible(true);
