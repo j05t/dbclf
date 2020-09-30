@@ -350,8 +350,7 @@ public abstract class CameraActivity extends FragmentActivity
                             public void onClick(DialogInterface dialog, int id) {
                                 preferredLanguageCode = supportedLanguageCodes.get(langSpinner.getSelectedItemPosition());
                                 PreferenceManager.getDefaultSharedPreferences(getBaseContext()).edit().putString("lang", preferredLanguageCode).apply();
-                                finish();
-                                startActivity(getIntent());
+                                recreate();
                             }
                         })
                         .setIcon(R.drawable.ic_change_language)

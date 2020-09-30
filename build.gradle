@@ -41,8 +41,8 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
 
-        versionCode 98
-        versionName "43"
+        versionCode 100
+        versionName "44"
     }
 
     if (buildFor == 'armabi-v7a') {
