@@ -864,16 +864,12 @@ public abstract class CameraActivity extends FragmentActivity
             requestPermission(PERMISSION_STORAGE_WRITE);
             return;
         }
-
-        Log.d("dbclf", "saving image, alreadyadded: " + alreadyAdded);
-
+        
         if (!alreadyAdded) {
             final String fileName = getString(R.string.app_name) + " " + System.currentTimeMillis() / 1000;
             fileUrl = MediaStore.Images.Media.insertImage(getContentResolver(), takeScreenshot(), fileName, currentRecognitions.toString());
             alreadyAdded = true;
         }
-
-        Log.d("dbclf", "saved image, url: " + fileUrl);
 
         saveButton.setVisibility(View.GONE);
         saveButton.setEnabled(false);
