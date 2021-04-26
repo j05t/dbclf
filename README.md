@@ -4,7 +4,7 @@ This is the source code for the <a href="https://play.google.com/store/apps/deta
 Stanford Dogs Dataset</a>. Based on the <a href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/examples/android">TensorFlow Android Camera Demo</a>
  application, licensed under <a href="https://github.com/j05t/dbclf/blob/master/LICENSE">Apache License 2.0</a>. French translation by Clément Thonon. Georgian translation by <a href="https://github.com/givargi">Giorgi Abulashvili</a>.
  
-<img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/2.png" alt="Screenshot" width="25%" height="25%" /> <img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/3.png" alt="Another Screenshot" width="25%" height="25%" /> <img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/8.png" alt="Another Screenshot" width="25%" height="25%" />
+<img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/2.png" alt="Screenshot" width="28%" height="28%" /> <img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/3.png" alt="Another Screenshot" width="28%" height="28%" /> <img src="https://github.com/j05t/dbclf/blob/master/metadata/en-US/images/phoneScreenshots/8.png" alt="Another Screenshot" width="28%" height="28%" />
 
 ## Downloads
 <a href="https://f-droid.org/en/packages/com.jstappdev.dbclf/"><img src="https://f-droid.org/badge/get-it-on.png" height="75" alt='Get it on F-Droid' />
